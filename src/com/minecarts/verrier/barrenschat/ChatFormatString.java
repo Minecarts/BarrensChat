@@ -9,8 +9,3 @@
    public static String SELF_CHANNEL_JOIN = "Joined channel %s[%s] %s";
    public static String SELF_CHANNEL_LEAVE = "Left channel %s[%s] %s";
  }
-
-/* Location:           F:\Users\stephen\Desktop\BarrensChat.jar
- * Qualified Name:     com.minecarts.verrier.barrenschat.ChatFormatString
- * JD-Core Version:    0.6.0
- */
