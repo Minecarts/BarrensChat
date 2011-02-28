@@ -56,6 +56,7 @@
      {
      case ChatWhisperEvent:
        if (((ChatWhisperEvent)event).isCancelled()) break;
+       
        Player sender = ((ChatWhisperEvent)event).getSender();
        Player receiver = ((ChatWhisperEvent)event).getReceiver();
        String msg = ((ChatWhisperEvent)event).getMessage();
@@ -79,8 +80,10 @@
        }
        break;
      case ChatChannelMessageEvent:
+    	 
        ChatChannelMessageEvent ccme = (ChatChannelMessageEvent)event;
        if (ccme.isCancelled()) break;
+       
        ccme.getChannel().chat(ccme.getPlayer(), ccme.getMessage());
        this.plugin.log.info("[" + ccme.getChannel().name + "] " + ccme.getPlayer().getName() + ": " + ccme.getMessage());
  
@@ -89,9 +92,8 @@
        ChatChannelJoinEvent ccje = (ChatChannelJoinEvent)event;
        if (!ccje.isCancelled()) {
          this.plugin.channelHelper.joinChannel(ccje.getPlayer(), ccje.getChannel());
+         this.plugin.log.info(String.format("[%s]: %s joined the channel", new Object[] { ccje.getChannel().name, ccje.getPlayer().getName() }));
        }
- 
-       this.plugin.log.info(String.format("[%s]: %s joined the channel", new Object[] { ccje.getChannel().name, ccje.getPlayer().getName() }));
        break;
      case ChatChannelLeaveEvent:
        ChatChannelLeaveEvent ccle = (ChatChannelLeaveEvent)event;
@@ -108,6 +110,7 @@
      case ChatChannelAnnounceEvent:
        ChatChannelAnnounceEvent ccae = (ChatChannelAnnounceEvent)event;
        if (ccae.isCancelled()) break;
+       
        ccae.getChannel().msg(ccae.getMessage());
  
        break;

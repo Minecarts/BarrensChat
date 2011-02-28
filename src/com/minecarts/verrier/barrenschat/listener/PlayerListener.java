@@ -85,8 +85,11 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener
 	@Override
 	public void onPlayerChat(PlayerChatEvent event)
 	{
+		//If it's canceled,  don't do anything
+		if(event.isCancelled()) return;
+		
 		Player player = event.getPlayer();
-		event.setCancelled(true); //Always cancel the event
+		event.setCancelled(true); //Always cancel the event becuase we handle it
 		//If this player has a default channel, then we want to
 		//	send the chat into their default channel
 			ChannelInfo defaultChannelInfo = plugin.dbHelper.getDefaultChannelInfo(player);
@@ -110,7 +113,6 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener
 		//Else if they have no default set, continue on to displaying it in the local say area
 		//Get the distance between the two players
 		Vector currentPlayer = event.getPlayer().getLocation().toVector();
-		Vector targetPlayer = event.getPlayer().getLocation().toVector();
 	
 		String message = String.format(event.getFormat(), player.getDisplayName(), event.getMessage());
 		Logger.getLogger("Minecraft").log(Level.INFO, String.format("Local: %1$s", message));
@@ -123,8 +125,7 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener
 		{
 			if (p != player)
 			{
-				Double distance = currentPlayer.distance(targetPlayer);
-				
+				Double distance = currentPlayer.distance(p.getLocation().toVector());
 				//Check to see their range
 				if(distance <= 75){
 					//Display in white
@@ -143,17 +144,16 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener
 		}
 		
 		//And display the message to the actual player who sent the message, but
-		//	only if there were nearby players
-		if(nearbyPlayers > 0){
-			player.sendMessage(message);
-		} else {
-			player.sendMessage(ChatColor.GRAY + "There are no players nearby that can hear you talk.");
-			//Check to see if the player is in the global channel
+		//	also display a tip if there were no players
+		player.sendMessage(message);
+		if(nearbyPlayers == 0){
 			if(!plugin.dbHelper.isPlayerInChannel(player, "Global")){
-				player.sendMessage(ChatColor.GOLD + " /join Global " + ChatColor.GRAY +" to chat with other online players.");	
+				//Fire off a tip request
+				player.sendMessage(ChatColor.GOLD + " /join Global " + ChatColor.GRAY +" to chat with other online players. (TODO: Tip)");	
 			}
-		}
-		
+			//
+			
+		}		
 	}
 	
 	@Override
