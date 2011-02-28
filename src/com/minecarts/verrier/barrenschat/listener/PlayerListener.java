@@ -170,7 +170,4 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener
 			//It wasn't an interger, let onCommand() deal with it.
 		}
 	}
-
-
-	
 }

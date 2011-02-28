@@ -40,8 +40,3 @@
      this.message = message;
    }
  }
-
-/* Location:           F:\Users\stephen\Desktop\BarrensChat.jar
- * Qualified Name:     com.minecarts.verrier.barrenschat.event.ChatChannelAnnounceEvent
- * JD-Core Version:    0.6.0
- */

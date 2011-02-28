@@ -35,8 +35,3 @@
      return this.channel;
    }
  }
-
-/* Location:           F:\Users\stephen\Desktop\BarrensChat.jar
- * Qualified Name:     com.minecarts.verrier.barrenschat.event.ChatChannelJoinEvent
- * JD-Core Version:    0.6.0
- */

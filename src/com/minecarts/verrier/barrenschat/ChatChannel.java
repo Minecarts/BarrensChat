@@ -64,16 +64,16 @@
      this.playerList.add(player);
  
      ChannelInfo channelInfo = this.plugin.dbHelper.getChannelInfoByChannel(player, this);
-     ChatColor color = this.plugin.channelColors[(channelInfo.index.intValue() % this.plugin.channelColors.length)];
+     ChatColor color = this.plugin.channelColors[(channelInfo.index % this.plugin.channelColors.length)];
  
-     player.sendMessage(String.format(ChatFormatString.SELF_CHANNEL_JOIN, new Object[] { color, channelInfo.index, this.name }));
+     player.sendMessage(String.format(ChatFormatString.SELF_CHANNEL_JOIN, color, channelInfo.index, this.name));
    }
  
    public void leave(Player player) {
      ChannelInfo channelInfo = this.plugin.dbHelper.getChannelInfoByChannel(player, this);
-     ChatColor color = this.plugin.channelColors[(channelInfo.index.intValue() % this.plugin.channelColors.length)];
+     ChatColor color = this.plugin.channelColors[(channelInfo.index % this.plugin.channelColors.length)];
  
-     player.sendMessage(String.format(ChatFormatString.SELF_CHANNEL_LEAVE, new Object[] { color, channelInfo.index, this.name }));
+     player.sendMessage(String.format(ChatFormatString.SELF_CHANNEL_LEAVE, color, channelInfo.index, this.name));
  
      this.playerList.remove(player);
      msg(player.getName() + " left the channel.");
@@ -92,8 +92,8 @@
    {
      for (Player p : this.playerList) {
        ChannelInfo channelInfo = this.plugin.dbHelper.getChannelInfoByChannel(p, this);
-       ChatColor color = this.plugin.channelColors[(channelInfo.index.intValue() % this.plugin.channelColors.length)];
-       p.sendMessage(color + String.format(ChatFormatString.CHANNEL_BROADCAST, new Object[] { channelInfo.index, msg }));
+       ChatColor color = this.plugin.channelColors[(channelInfo.index % this.plugin.channelColors.length)];
+       p.sendMessage(color + String.format(ChatFormatString.CHANNEL_BROADCAST, channelInfo.index, msg ));
      }
    }
  
@@ -106,8 +106,8 @@
          continue;
        }
        ChannelInfo channelInfo = this.plugin.dbHelper.getChannelInfoByChannel(p, this);
-       ChatColor color = this.plugin.channelColors[(channelInfo.index.intValue() % this.plugin.channelColors.length)];
-       String formattedMsg = String.format(ChatFormatString.CHANNEL_USER_MESSAGE, new Object[] { channelInfo.index, sender.getName(), msg });
+       ChatColor color = this.plugin.channelColors[(channelInfo.index % this.plugin.channelColors.length)];
+       String formattedMsg = String.format(ChatFormatString.CHANNEL_USER_MESSAGE, channelInfo.index, sender.getName(), msg);
  
        p.sendMessage(color + formattedMsg);
      }

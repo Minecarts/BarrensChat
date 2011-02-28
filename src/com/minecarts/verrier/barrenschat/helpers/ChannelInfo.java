@@ -15,8 +15,3 @@
      this.isDefault = isDefault;
    }
  }
-
-/* Location:           F:\Users\stephen\Desktop\BarrensChat.jar
- * Qualified Name:     com.minecarts.verrier.barrenschat.helpers.ChannelInfo
- * JD-Core Version:    0.6.0
- */

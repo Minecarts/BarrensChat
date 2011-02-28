@@ -137,7 +137,7 @@ public class DBHelper
     {
        PreparedStatement ps = (PreparedStatement)this.statements.get("GetChannelByIndex");
        ps.setString(1, player.getName());
-       ps.setInt(2, index.intValue());
+       ps.setInt(2, index);
        ResultSet set = ps.executeQuery();
 
        if (set.next()) {
@@ -289,7 +289,7 @@ public class DBHelper
        if (indexReturn.size() > 0) {
          this.plugin.getClass();
 
-         return ((Integer)indexReturn.get(0)).intValue();
+         return ((Integer)indexReturn.get(0));
       }
        this.plugin.getClass();
 

@@ -23,7 +23,8 @@
  
      public channelInfo() {  }
  
-     public ChannelInfo getPlayerChannelInfo(Player player, ChatChannel channel) { if ((this.channelInfoList.containsKey(player)) && (((HashMap<ChatChannel,ChannelInfo>)this.channelInfoList.get(player)).containsKey(channel))) {
+     public ChannelInfo getPlayerChannelInfo(Player player, ChatChannel channel) { 
+       if ((this.channelInfoList.containsKey(player)) && (((HashMap<ChatChannel,ChannelInfo>) this.channelInfoList.get(player)).containsKey(channel))) {
          return (ChannelInfo)((HashMap<ChatChannel,ChannelInfo>)this.channelInfoList.get(player)).get(channel);
        }
        return null;
@@ -78,8 +79,3 @@
      }
    }
  }
-
-/* Location:           F:\Users\stephen\Desktop\BarrensChat.jar
- * Qualified Name:     com.minecarts.verrier.barrenschat.helpers.Cache
- * JD-Core Version:    0.6.0
- */

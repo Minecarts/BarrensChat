@@ -1,32 +1,26 @@
 package com.minecarts.verrier.barrenschat;
 
-import com.minecarts.verrier.barrenschat.event.ChatChannelJoinEvent;
-import com.minecarts.verrier.barrenschat.event.ChatChannelLeaveEvent;
-import com.minecarts.verrier.barrenschat.event.ChatWhisperEvent;
-import com.minecarts.verrier.barrenschat.helpers.Cache;
-import com.minecarts.verrier.barrenschat.helpers.Cache.ignoreList;
-import com.minecarts.verrier.barrenschat.helpers.ChannelHelper;
- import com.minecarts.verrier.barrenschat.helpers.ChannelInfo;
- import com.minecarts.verrier.barrenschat.helpers.DBHelper;
- import com.minecarts.verrier.barrenschat.helpers.StringHelper;
- import com.minecarts.verrier.barrenschat.listener.ChatListener;
- import com.minecarts.verrier.barrenschat.listener.PlayerListener;
- import java.util.ArrayList;
- import java.util.HashMap;
- import java.util.List;
- import java.util.logging.Logger;
- import org.bukkit.ChatColor;
- import org.bukkit.command.Command;
- import org.bukkit.command.CommandSender;
- import org.bukkit.entity.Player;
- import org.bukkit.event.player.PlayerChatEvent;
- import org.bukkit.plugin.PluginDescriptionFile;
- import org.bukkit.plugin.PluginManager;
- import org.bukkit.plugin.java.JavaPlugin;
- import org.bukkit.util.config.Configuration;
+import com.minecarts.verrier.barrenschat.event.*;
+import com.minecarts.verrier.barrenschat.helpers.*;
+import com.minecarts.verrier.barrenschat.listener.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.logging.Logger;
+
+import org.bukkit.event.*;
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.util.config.Configuration;
  
- import org.bukkit.event.*;
- 
+
  public class BarrensChat extends JavaPlugin
  {
    private final PlayerListener playerListener = new PlayerListener(this);
@@ -87,8 +81,10 @@ import com.minecarts.verrier.barrenschat.helpers.ChannelHelper;
     		//getPluginLoader().disablePlugin(this); //Doesn't work???
     	}
     	
-     //This will cause the defaults to be saved and the config written
-    	this.config.save();
+    //Save the configuration file with the defaults
+    //	or with what it currently has in it
+    saveConfiguration();
+    	
      	
      
      PluginDescriptionFile pdf = getDescription();
@@ -224,7 +220,7 @@ import com.minecarts.verrier.barrenschat.helpers.ChannelHelper;
 	             for (ChannelInfo channelInfo : channelInfoList)
 	             {
 	               ChatChannel c = this.channelHelper.getChannelFromName(channelInfo.name);
-	               color = this.channelColors[(channelInfo.index.intValue() % this.channelColors.length)];
+	               color = this.channelColors[(channelInfo.index % this.channelColors.length)];
 	 
 	               String defaultFlag = "";
 	               if (channelInfo.isDefault.booleanValue()) {
@@ -300,6 +296,19 @@ import com.minecarts.verrier.barrenschat.helpers.ChannelHelper;
        return ch.playerList;
      }
      return null;
+   }
+   
+   private void saveConfiguration(){
+	   //We can get it from the config because we're
+	   //	not currently modifying these values in the plugin itself
+	   //	BUT! If we ever start adding config options, may need to handle this
+	   //	differently
+	   	this.config.setProperty("db.hostname",this.config.getString("db.hostname", "127.0.0.1"));
+	   	this.config.setProperty("db.port",this.config.getInt("db.port", 3306));
+	   	this.config.setProperty("db.database",this.config.getString("db.database", "database"));
+	   	this.config.setProperty("db.username",this.config.getString("db.username", "username"));
+	   	this.config.setProperty("db.password",this.config.getString("db.password", "password"));
+	   	this.config.save();
    }
  
    

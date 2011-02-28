@@ -40,8 +40,3 @@
      return this.message;
    }
  }
-
-/* Location:           F:\Users\stephen\Desktop\BarrensChat.jar
- * Qualified Name:     com.minecarts.verrier.barrenschat.event.ChatWhisperEvent
- * JD-Core Version:    0.6.0
- */
