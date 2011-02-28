@@ -1,0 +1,39 @@
+name: BarrensChat
+main: com.minecarts.verrier.barrenschat.BarrensChat
+version: 1.0
+website: http://minecarts.com
+author: Verrier
+description: >
+             A MMMORPG like chat plugin
+commands:
+  ch:
+    description: The main command to access all BarrensChat internal commands
+    usage: /<command>
+  whisper:
+    aliases: [w,msg]
+    description: Privately message a player
+    usage: /<command> [player] [msg]
+  say:
+    aliases: [s]
+    description: Chat with players nearby
+    usage: /<command> [player] [msg]
+  join:
+    description: Join a given channel
+    usage: /<command> [channel]
+  leave:
+    description: Leave a given channel
+    usage: /<command> [channel]
+  reply: 
+    aliases: [r]
+    description: Respond to the last person to whisper you
+    usage: /<command> [msg]
+  rewhisper:
+    aliases: [rw]
+    description: Resends a whisper to the last person you whispered
+    usage: /<command> [msg]
+  ignore:
+    description: Ignore a player
+    usage: /<command> [player]
+  unignore:
+    description: Unignore a player
+    usage: /<command> [player]
