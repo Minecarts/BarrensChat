@@ -158,11 +158,8 @@ public class DBHelper
   public ChannelInfo getChannelInfoByChannel(Player player, ChatChannel channel) {
      ChannelInfo info = this.plugin.cache.channelInfo.getPlayerChannelInfo(player, channel);
      if (info != null) {
-       this.plugin.getClass();
-
        return info;
     }
-     this.plugin.getClass();
     try
     {
        PreparedStatement ps = (PreparedStatement)this.statements.get("GetChannelById");
@@ -189,7 +186,6 @@ public class DBHelper
 
   public void addPlayerChannel(Player player, ChatChannel channel, int index)
   {
-     this.plugin.getClass();
     try
     {
        PreparedStatement ps = (PreparedStatement)this.statements.get("InsertChannel");
@@ -204,9 +200,7 @@ public class DBHelper
   }
 
   public void removePlayerChannel(Player player, ChatChannel channel) {
-     this.plugin.getClass();
-
-     this.plugin.cache.channelInfo.invalidatePlayer(player);
+    this.plugin.cache.channelInfo.invalidatePlayer(player);
     try {
        PreparedStatement ps = (PreparedStatement)this.statements.get("DeleteChannel");
        ps.setString(1, player.getName());
@@ -216,12 +210,30 @@ public class DBHelper
        e.printStackTrace();
     }
   }
+  
+  
+  public boolean isPlayerInChannel(Player player, String channelName){
+	  ChatChannel chan = plugin.channelHelper.getChannelFromName(channelName);
+	  return isPlayerInChannel(player, chan);
+  }
+  public boolean isPlayerInChannel(Player player, ChatChannel channel){
+	  try {
+		  PreparedStatement ps = (PreparedStatement)this.statements.get("GetChannelById");
+	      ps.setString(1, player.getName());
+	      ps.setString(2, channel.name.toLowerCase());
+	      ResultSet set = ps.executeQuery();
+	      return set.next(); //Return true or false
+	  } catch (SQLException e) {
+		  e.printStackTrace();
+	  }
+	  
+	  return false; 
+  }
+  
 
   public List<String> getIgnoreList(Player player)
   {
-     this.plugin.getClass();
-
-     List<String> ignoreList = new ArrayList<String>();
+    List<String> ignoreList = new ArrayList<String>();
     try
     {
        PreparedStatement ps = (PreparedStatement)this.statements.get("GetIgnoreList");

@@ -114,13 +114,11 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener
 	
 		String message = String.format(event.getFormat(), player.getDisplayName(), event.getMessage());
 		Logger.getLogger("Minecraft").log(Level.INFO, String.format("Local: %1$s", message));
-
-		//Send the message to the actual player sending the message
-		player.sendMessage(message);
-		
+	
 		//Ideally we would make use of event.getRecipients()
 		//	but that was just recently implemented and
-		//	maybe we'll do that in the future
+		//	maybe we'll do that in the future		
+		int nearbyPlayers = 0;
 		for (Player p : plugin.getServer().getOnlinePlayers())
 		{
 			if (p != player)
@@ -131,16 +129,31 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener
 				if(distance <= 75){
 					//Display in white
 					p.sendMessage(ChatColor.WHITE + message);
+					nearbyPlayers++;
 				} else 
 				if(distance <= 200){
 					//Display in grey
 					p.sendMessage(ChatColor.GRAY + message);
+					nearbyPlayers++;
 				} else {
 					//They are out of range
 					//this.sendChatMessage(p, message);
 				}
 			}
 		}
+		
+		//And display the message to the actual player who sent the message, but
+		//	only if there were nearby players
+		if(nearbyPlayers > 0){
+			player.sendMessage(message);
+		} else {
+			player.sendMessage(ChatColor.GRAY + "There are no players nearby that can hear you talk.");
+			//Check to see if the player is in the global channel
+			if(!plugin.dbHelper.isPlayerInChannel(player, "Global")){
+				player.sendMessage(ChatColor.GOLD + " /join Global " + ChatColor.GRAY +" to chat with other online players.");	
+			}
+		}
+		
 	}
 	
 	@Override
