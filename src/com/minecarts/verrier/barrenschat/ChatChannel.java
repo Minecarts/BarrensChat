@@ -93,7 +93,7 @@
      }
  
      if (this.playerList.isEmpty()) {
-       this.plugin.getClass();
+       //Delete the channel?
      }
      else if (this.moderator == player)
      {

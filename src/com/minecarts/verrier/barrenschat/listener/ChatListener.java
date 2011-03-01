@@ -89,7 +89,7 @@
      case ChatChannelJoinEvent:
        ChatChannelJoinEvent ccje = (ChatChannelJoinEvent)event;
        if (!ccje.isCancelled()) {
-         this.plugin.channelHelper.joinChannel(ccje.getPlayer(), ccje.getChannel());
+         this.plugin.channelHelper.joinChannel(ccje.getPlayer(), ccje.getChannel(), ccje.getRejoin());
          this.plugin.log.info(String.format("[%s]: %s joined the channel", new Object[] { ccje.getChannel().name, ccje.getPlayer().getName() }));
        }
        break;
@@ -99,7 +99,7 @@
        
        ccle.getChannel().leave(ccle.getPlayer(), !(ccle.getReason() == "QUIT")); //Alert only if it's not a quit
  
-       if (ccle.getReason() == "LEAVE") {
+       if (ccle.getReason() == "COMMAND") {
          this.plugin.dbHelper.removePlayerChannel(ccle.getPlayer(), ccle.getChannel());
        }
  

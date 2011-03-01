@@ -175,7 +175,7 @@ import org.bukkit.util.config.Configuration;
 	       case join:
 	         ChatChannel chan = this.channelHelper.getChannelFromName(argString);
 	         if (chan != null) {
-	           ChatChannelJoinEvent ccje = new ChatChannelJoinEvent(player, chan);
+	           ChatChannelJoinEvent ccje = new ChatChannelJoinEvent(player, chan, "COMMAND", false);
 	           getServer().getPluginManager().callEvent(ccje);
 	         } else {
 	           player.sendMessage("Internal error: Unable to create and join channel");
@@ -188,7 +188,7 @@ import org.bukkit.util.config.Configuration;
 	           ChannelInfo ci = this.dbHelper.getChannelInfoAtIndex(player, Integer.valueOf(chatIndex));
 	           chan = this.channelHelper.getChannelFromName(ci.name);
 	           if (chan != null) {
-	             ccle = new ChatChannelLeaveEvent(player, chan, "LEAVE");
+	             ccle = new ChatChannelLeaveEvent(player, chan, "COMMAND");
 	             getServer().getPluginManager().callEvent(ccle);
 	           } else {
 	             this.log.info("Error: Channel with name" + ci.name + " could not be fetched");
