@@ -60,7 +60,10 @@
  
    public void join(Player player)
    {
-     msg(player.getName() + " joined the channel.");
+	 //Don't display join and leave messages for Global or PVP
+	   if(!(this.id.equals("global") || this.id.equals("pvp"))){
+		 msg(player.getName() + " joined the channel.");
+	   }
      this.playerList.add(player);
  
      ChannelInfo channelInfo = this.plugin.dbHelper.getChannelInfoByChannel(player, this);
@@ -76,7 +79,11 @@
      player.sendMessage(String.format(ChatFormatString.SELF_CHANNEL_LEAVE, color, channelInfo.index, this.name));
  
      this.playerList.remove(player);
-     msg(player.getName() + " left the channel.");
+     
+     //Don't display join and leave messages for Global or PVP
+     if(!(this.id.equals("global") || this.id.equals("pvp"))){
+    	 msg(player.getName() + " left the channel.");
+     }
  
      if (this.playerList.isEmpty()) {
        this.plugin.getClass();
