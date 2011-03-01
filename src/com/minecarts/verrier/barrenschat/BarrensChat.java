@@ -300,6 +300,14 @@ import org.bukkit.util.config.Configuration;
      return null;
    }
    
+   public String getChannelName(Player player, int index){
+	   ChannelInfo ci = this.dbHelper.getChannelInfoAtIndex(player, index);
+	   if(ci != null){
+		   return ci.name;
+	   }
+	   return null;
+   }
+   
    private void saveConfiguration(){
 	   //We can get it from the config because we're
 	   //	not currently modifying these values in the plugin itself
