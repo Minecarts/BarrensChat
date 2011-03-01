@@ -67,14 +67,15 @@
      this.playerList.add(player);
  
      ChannelInfo channelInfo = this.plugin.dbHelper.getChannelInfoByChannel(player, this);
-     ChatColor color = this.plugin.channelColors[(channelInfo.index % this.plugin.channelColors.length)];
+     ChatColor color = ChatColor.valueOf(this.plugin.channelColors.get((channelInfo.index % this.plugin.channelColors.size())));
+     
  
      player.sendMessage(String.format(ChatFormatString.SELF_CHANNEL_JOIN, color, channelInfo.index, this.name));
    }
  
    public void leave(Player player) {
      ChannelInfo channelInfo = this.plugin.dbHelper.getChannelInfoByChannel(player, this);
-     ChatColor color = this.plugin.channelColors[(channelInfo.index % this.plugin.channelColors.length)];
+     ChatColor color = ChatColor.valueOf(this.plugin.channelColors.get((channelInfo.index % this.plugin.channelColors.size())));
  
      player.sendMessage(String.format(ChatFormatString.SELF_CHANNEL_LEAVE, color, channelInfo.index, this.name));
  
@@ -99,7 +100,7 @@
    {
      for (Player p : this.playerList) {
        ChannelInfo channelInfo = this.plugin.dbHelper.getChannelInfoByChannel(p, this);
-       ChatColor color = this.plugin.channelColors[(channelInfo.index % this.plugin.channelColors.length)];
+       ChatColor color = ChatColor.valueOf(this.plugin.channelColors.get((channelInfo.index % this.plugin.channelColors.size())));
        p.sendMessage(color + String.format(ChatFormatString.CHANNEL_BROADCAST, channelInfo.index, msg ));
      }
    }
@@ -113,7 +114,7 @@
          continue;
        }
        ChannelInfo channelInfo = this.plugin.dbHelper.getChannelInfoByChannel(p, this);
-       ChatColor color = this.plugin.channelColors[(channelInfo.index % this.plugin.channelColors.length)];
+       ChatColor color = ChatColor.valueOf(this.plugin.channelColors.get((channelInfo.index % this.plugin.channelColors.size())));
        String formattedMsg = String.format(ChatFormatString.CHANNEL_USER_MESSAGE, channelInfo.index, sender.getName(), msg);
  
        p.sendMessage(color + formattedMsg);

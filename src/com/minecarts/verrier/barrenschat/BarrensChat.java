@@ -39,13 +39,7 @@ import org.bukkit.util.config.Configuration;
 
    public final Logger log = Logger.getLogger("Minecraft");
    
-   public ChatColor[] channelColors = { 
-     ChatColor.GOLD, 
-     ChatColor.RED, 
-     ChatColor.DARK_GREEN, 
-     ChatColor.BLUE, 
-     ChatColor.DARK_PURPLE, 
-     ChatColor.DARK_RED };
+   public List<String> channelColors;
  
    public void onEnable()
    {
@@ -81,12 +75,19 @@ import org.bukkit.util.config.Configuration;
     		log.severe("Unable to connect to database");
     		//getPluginLoader().disablePlugin(this); //Doesn't work???
     	}
+    
+   	//Load our colors
+    	List<String> defaultColors = new ArrayList<String>();
+    	defaultColors.add("GOLD");
+    	defaultColors.add("RED");
+    	defaultColors.add("GREEN");
+    	
+    	this.channelColors = config.getStringList("channel.colors", defaultColors);
     	
     //Save the configuration file with the defaults
     //	or with what it currently has in it
     saveConfiguration();
-    	
-     	
+         	
      
      PluginDescriptionFile pdf = getDescription();
      this.log.info("[" + pdf.getName() + "] version " + pdf.getVersion() + " loaded.");
@@ -221,7 +222,7 @@ import org.bukkit.util.config.Configuration;
 	             for (ChannelInfo channelInfo : channelInfoList)
 	             {
 	               ChatChannel c = this.channelHelper.getChannelFromName(channelInfo.name);
-	               color = this.channelColors[(channelInfo.index % this.channelColors.length)];
+	               color = ChatColor.valueOf(this.channelColors.get((channelInfo.index % this.channelColors.size())));
 	 
 	               String defaultFlag = "";
 	               if (channelInfo.isDefault.booleanValue()) {
@@ -309,6 +310,9 @@ import org.bukkit.util.config.Configuration;
 	   	this.config.setProperty("db.database",this.config.getString("db.database", "database"));
 	   	this.config.setProperty("db.username",this.config.getString("db.username", "username"));
 	   	this.config.setProperty("db.password",this.config.getString("db.password", "password"));
+
+	   	this.config.setProperty("channel.colors",this.config.getStringList("channel.colors", new ArrayList<String>()));
+	   	
 	   	this.config.save();
    }
  
