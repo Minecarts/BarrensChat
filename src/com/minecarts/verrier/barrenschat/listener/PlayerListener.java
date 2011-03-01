@@ -120,40 +120,22 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener
 		//Ideally we would make use of event.getRecipients()
 		//	but that was just recently implemented and
 		//	maybe we'll do that in the future		
-		int nearbyPlayers = 0;
+		ArrayList<RecipientData> recipients = new ArrayList<RecipientData>();
 		for (Player p : plugin.getServer().getOnlinePlayers())
 		{
 			if (p != player)
 			{
 				Double distance = currentPlayer.distance(p.getLocation().toVector());
-				//Check to see their range
-				if(distance <= 75){
-					//Display in white
-					p.sendMessage(ChatColor.WHITE + message);
-					nearbyPlayers++;
-				} else 
-				if(distance <= 200){
-					//Display in grey
-					p.sendMessage(ChatColor.GRAY + message);
-					nearbyPlayers++;
-				} else {
-					//They are out of range
-					//this.sendChatMessage(p, message);
-				}
+				recipients.add(new RecipientData(distance,p));
 			}
 		}
+		
+		ChatLocalMessageEvent clme = new ChatLocalMessageEvent(player,recipients,message);
+		plugin.getServer().getPluginManager().callEvent(clme);
 		
 		//And display the message to the actual player who sent the message, but
 		//	also display a tip if there were no players
 		player.sendMessage(message);
-		if(nearbyPlayers == 0){
-			if(!plugin.dbHelper.isPlayerInChannel(player, "Global")){
-				//Fire off a tip request
-				player.sendMessage(ChatColor.GOLD + " /join Global " + ChatColor.GRAY +" to chat with other online players. (TODO: Tip)");	
-			}
-			//
-			
-		}		
 	}
 	
 	@Override
@@ -180,6 +162,17 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener
 			}
 		} catch (java.lang.NumberFormatException ex2){
 			//It wasn't an interger, let onCommand() deal with it.
+		}
+	}
+	
+	
+	
+	public class RecipientData{
+		public Double distance;
+		public Player player;
+		public RecipientData(Double distance, Player player){
+			this.distance = distance;
+			this.player = player;
 		}
 	}
 }

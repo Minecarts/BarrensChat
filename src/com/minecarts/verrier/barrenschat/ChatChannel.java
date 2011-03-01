@@ -58,10 +58,13 @@
      return null;
    }
  
-   public void join(Player player)
+   public void join(Player player){
+	   this.join(player,true);
+   }
+   public void join(Player player, boolean alert)
    {
 	 //Don't display join and leave messages for Global or PVP
-	   if(!(this.id.equals("global") || this.id.equals("pvp"))){
+	   if(alert){
 		 msg(player.getName() + " joined the channel.");
 	   }
      this.playerList.add(player);
@@ -73,16 +76,19 @@
      player.sendMessage(String.format(ChatFormatString.SELF_CHANNEL_JOIN, color, channelInfo.index, this.name));
    }
  
-   public void leave(Player player) {
+   public void leave(Player player){
+	   this.leave(player,true);
+   }
+   public void leave(Player player, boolean alert) {
      ChannelInfo channelInfo = this.plugin.dbHelper.getChannelInfoByChannel(player, this);
      ChatColor color = ChatColor.valueOf(this.plugin.channelColors.get((channelInfo.index % this.plugin.channelColors.size())));
  
      player.sendMessage(String.format(ChatFormatString.SELF_CHANNEL_LEAVE, color, channelInfo.index, this.name));
- 
+     
      this.playerList.remove(player);
      
      //Don't display join and leave messages for Global or PVP
-     if(!(this.id.equals("global") || this.id.equals("pvp"))){
+     if(alert){
     	 msg(player.getName() + " left the channel.");
      }
  

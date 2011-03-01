@@ -5,11 +5,7 @@
  import com.minecarts.verrier.barrenschat.BarrensChat;
  import com.minecarts.verrier.barrenschat.ChatChannel;
  import com.minecarts.verrier.barrenschat.WhisperTracker;
- import com.minecarts.verrier.barrenschat.event.ChatChannelAnnounceEvent;
- import com.minecarts.verrier.barrenschat.event.ChatChannelJoinEvent;
- import com.minecarts.verrier.barrenschat.event.ChatChannelLeaveEvent;
- import com.minecarts.verrier.barrenschat.event.ChatChannelMessageEvent;
- import com.minecarts.verrier.barrenschat.event.ChatWhisperEvent;
+ import com.minecarts.verrier.barrenschat.event.*;
  import com.minecarts.verrier.barrenschat.helpers.Cache;
  import com.minecarts.verrier.barrenschat.helpers.Cache.ignoreList;
  import com.minecarts.verrier.barrenschat.helpers.ChannelHelper;
@@ -19,6 +15,8 @@
  import org.bukkit.entity.Player;
  import org.bukkit.event.CustomEventListener;
  import org.bukkit.event.Event;
+ 
+ import com.minecarts.verrier.barrenschat.listener.PlayerListener.RecipientData;
  
  public class ChatListener extends CustomEventListener
  {
@@ -33,10 +31,10 @@
    {
      ChatWhisperEvent, 
      ChatChannelMessageEvent, 
-     ChatNearbyMessageEvent, 
      ChatChannelJoinEvent, 
-     ChatChannelLeaveEvent, 
+     ChatChannelLeaveEvent,
      ChatChannelAnnounceEvent, 
+     ChatLocalMessageEvent,
      IgnoreListAddEvent, 
      IgnoreListRemoveEvent, 
  
@@ -98,7 +96,8 @@
      case ChatChannelLeaveEvent:
        ChatChannelLeaveEvent ccle = (ChatChannelLeaveEvent)event;
        if (ccle.isCancelled()) break;
-       ccle.getChannel().leave(ccle.getPlayer());
+       
+       ccle.getChannel().leave(ccle.getPlayer(), !(ccle.getReason() == "QUIT")); //Alert only if it's not a quit
  
        if (ccle.getReason() == "LEAVE") {
          this.plugin.dbHelper.removePlayerChannel(ccle.getPlayer(), ccle.getChannel());
@@ -114,6 +113,21 @@
        ccae.getChannel().msg(ccae.getMessage());
  
        break;
+       
+     case ChatLocalMessageEvent:
+    	 ChatLocalMessageEvent clme = (ChatLocalMessageEvent)event;
+    	 if(clme.isCancelled()) break;
+    	 
+    	 for(RecipientData rd : clme.getRecipients()){
+				if(rd.distance <= 75){
+					rd.player.sendMessage(ChatColor.WHITE + clme.getMessage());
+				} else if(rd.distance <= 200){
+					rd.player.sendMessage(ChatColor.GRAY + clme.getMessage());
+				} else {
+					//They are out of range
+				}
+    	 }
+    	 break;
      case HeroicDeathEvent:
        HeroicDeathEvent he = (HeroicDeathEvent)event;
        ChatChannel chan = this.plugin.channelHelper.getChannelFromName("PVP");

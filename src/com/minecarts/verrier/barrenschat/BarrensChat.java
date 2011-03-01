@@ -289,13 +289,16 @@ import org.bukkit.util.config.Configuration;
      return false;
    }
  
-   public ArrayList<Player> getChannelMembers(Player requestingPlayer, int channelIndex)
+   public Player[] getChannelMembers(Player requestingPlayer, int channelIndex)
    {
      ChannelInfo ci = this.dbHelper.getChannelInfoAtIndex(requestingPlayer, Integer.valueOf(channelIndex));
      ChatChannel ch = this.channelHelper.getChannelFromName(ci.name);
  
      if (ch != null) {
-       return ch.playerList;
+       log.info("Player list has: " + ch.playerList.size() + " members");
+       return ch.playerList.toArray(new Player[0]);
+     } else {
+    	log.info("Channel was null");
      }
      return null;
    }

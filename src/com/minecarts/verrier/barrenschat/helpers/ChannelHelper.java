@@ -41,7 +41,7 @@
          if (!rejoining) {
            this.plugin.dbHelper.addPlayerChannel(player, channel, nextIndex);
          }
-         channel.join(player);
+         channel.join(player, !rejoining); //Handle alerting joining the channel
        }
      } else {
        this.plugin.log.info(player.getName() + " could not join channel " + channel.name + ": " + reason);
