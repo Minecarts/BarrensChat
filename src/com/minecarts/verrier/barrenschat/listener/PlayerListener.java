@@ -179,7 +179,6 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener
 				event.setCancelled(true); //And cancel the event because the command has been handled
 			}
 		} catch (java.lang.NumberFormatException ex2){
-			plugin.log.info("Command not an integer");
 			//It wasn't an interger, let onCommand() deal with it.
 		}
 	}
