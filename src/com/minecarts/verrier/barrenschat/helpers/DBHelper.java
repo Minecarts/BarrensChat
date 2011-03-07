@@ -16,8 +16,8 @@ import org.bukkit.entity.Player;
 
 public class DBHelper
 {
-  BarrensChat plugin;
-  Connection connection;
+   BarrensChat plugin;
+   public Connection connection;
    boolean connected = false;
 
    ArrayList<Integer> masterIndexList = new ArrayList<Integer>();
@@ -33,6 +33,14 @@ public class DBHelper
        i++; plugin.getClass(); } while (i <= 10);
   }
 
+  public void dbClose(){
+	  try{
+		  this.connection.close();
+	  } catch (SQLException e){
+		  e.printStackTrace();
+	  }
+  }
+  
   public boolean dbConnect(String host, String port, String db, String username, String password)
   {
     try
