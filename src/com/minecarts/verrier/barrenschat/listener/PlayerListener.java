@@ -48,7 +48,6 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener
 
 	@Override
 	public void onPlayerJoin(PlayerEvent event){
-		
 		Player player = event.getPlayer();
 		ArrayList<ChannelInfo> chatChannels = plugin.dbHelper.getPlayerChannelsInfo(player);
 		
@@ -73,11 +72,11 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener
 			//plugin.channelHelper.joinChannel(event.getPlayer(), "PVP");
 
 			ChatChannel chan = plugin.channelHelper.getChannelFromName("Global");
-			ChatChannelJoinEvent ccje = new ChatChannelJoinEvent(player, chan, "JOIN", true);
+			ChatChannelJoinEvent ccje = new ChatChannelJoinEvent(player, chan, "JOIN", false);
 	        plugin.getServer().getPluginManager().callEvent(ccje);
 	        
 	        chan = plugin.channelHelper.getChannelFromName("PVP");
-			ccje = new ChatChannelJoinEvent(player, chan, "JOIN", true);
+			ccje = new ChatChannelJoinEvent(player, chan, "JOIN", false);
 	        plugin.getServer().getPluginManager().callEvent(ccje);
 		}
 	}
@@ -165,7 +164,7 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener
 			ChannelInfo ci = plugin.dbHelper.getChannelInfoAtIndex(player, channelNum);
 			if(ci != null && channelNum <= plugin.MAX_CHANNELS){
 				ChatChannel chan = plugin.channelHelper.getChannelFromName(ci.name);
-				if(args[1] != null && args[1].length() > 0){
+				if(args.length > 1 && args[1].length() > 0 && args[1] != null){
 					//Trigger the channel message event
 					ChatChannelMessageEvent ccme = new ChatChannelMessageEvent(player,chan,args[1]);
 					plugin.getServer().getPluginManager().callEvent(ccme);
