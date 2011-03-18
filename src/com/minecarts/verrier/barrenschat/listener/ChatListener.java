@@ -66,11 +66,7 @@
        {
          sender.sendMessage(ChatColor.DARK_AQUA + "> [" + receiver.getName() + "] " + msg);
          receiver.sendMessage(ChatColor.AQUA + "[" + sender.getName() + "] " + msg);
- 
-         if (!this.plugin.dbHelper.checkHelpFlag(receiver, "WHISPER")) {
-           receiver.sendMessage(ChatColor.GRAY + " ^ This is a whisper. Type " + ChatColor.GOLD + "/w " + sender.getName() + " message" + ChatColor.GRAY + " or " + ChatColor.GOLD + "/r message" + ChatColor.GRAY + " to reply.");
-         }
- 
+         
          this.plugin.whisperTracker.setWhisperSent(sender, receiver);
          this.plugin.whisperTracker.setWhisperReceived(sender, receiver);
  
