@@ -34,11 +34,11 @@ public class DBHelper
   }
 
   public void dbClose(){
-	  try{
-		  this.connection.close();
-	  } catch (SQLException e){
-		  e.printStackTrace();
-	  }
+      try{
+          this.connection.close();
+      } catch (SQLException e){
+          e.printStackTrace();
+      }
   }
   
   public boolean dbConnect(String host, String port, String db, String username, String password)
@@ -46,7 +46,8 @@ public class DBHelper
     try
     {
        Class.forName("com.mysql.jdbc.Driver");
-       this.connection = DriverManager.getConnection("jdbc:mysql://" + host + ":"+port+"/" + db, username, password);
+       String connectionString = String.format("jdbc:mysql://%s:%s/%s?autoReconnect=true",host,port,db);
+       this.connection = DriverManager.getConnection(connectionString, username, password);
        this.connected = true;
 
        createTables();
@@ -56,7 +57,7 @@ public class DBHelper
     }
     catch (Exception e)
     {
-      this.plugin.log.warning("****CRITICAL*** Unable to connect to MySQL DB");
+      this.plugin.log.severe("****CRITICAL*** Unable to connect to MySQL DB");
       e.printStackTrace();
       return false;
     }
@@ -221,21 +222,21 @@ public class DBHelper
   
   
   public boolean isPlayerInChannel(Player player, String channelName){
-	  ChatChannel chan = plugin.channelHelper.getChannelFromName(channelName);
-	  return isPlayerInChannel(player, chan);
+      ChatChannel chan = plugin.channelHelper.getChannelFromName(channelName);
+      return isPlayerInChannel(player, chan);
   }
   public boolean isPlayerInChannel(Player player, ChatChannel channel){
-	  try {
-		  PreparedStatement ps = (PreparedStatement)this.statements.get("GetChannelById");
-	      ps.setString(1, player.getName());
-	      ps.setString(2, channel.name.toLowerCase());
-	      ResultSet set = ps.executeQuery();
-	      return set.next(); //Return true or false
-	  } catch (SQLException e) {
-		  e.printStackTrace();
-	  }
-	  
-	  return false; 
+      try {
+          PreparedStatement ps = (PreparedStatement)this.statements.get("GetChannelById");
+          ps.setString(1, player.getName());
+          ps.setString(2, channel.name.toLowerCase());
+          ResultSet set = ps.executeQuery();
+          return set.next(); //Return true or false
+      } catch (SQLException e) {
+          e.printStackTrace();
+      }
+      
+      return false; 
   }
   
 
@@ -380,9 +381,9 @@ public class DBHelper
 
   public void createStatements()
   {
-	  //We only want to create our prepared statements once, to take 
-	  //	advantage of the caching involved when doing multiple queries
-	  //	with the same prepared statement
+      //We only want to create our prepared statements once, to take 
+      //    advantage of the caching involved when doing multiple queries
+      //    with the same prepared statement
     try
     {
        this.statements.put("GetPlayerChannels", this.connection.prepareStatement("SELECT * FROM player_channels WHERE playerName = ?"));
