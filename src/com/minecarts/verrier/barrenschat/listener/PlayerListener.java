@@ -24,33 +24,15 @@ import org.bukkit.util.Vector;
 public class PlayerListener extends org.bukkit.event.player.PlayerListener
 {
 	private final BarrensChat plugin;
-	private String shoutPrefix;
-	private boolean adminsAlwaysShout = false;
-	private boolean playersCanShout = true;
-	private int shoutRadius = 200;
-
 	public PlayerListener(BarrensChat instance)
 	{
 		plugin = instance;
-		reload();
 	}
-
-	private void reload()
-	{
-		/*
-		plugin.getConfiguration().load();
-		adminsAlwaysShout = plugin.getConfiguration().getBoolean("admins-always-shout", adminsAlwaysShout);
-		playersCanShout = plugin.getConfiguration().getBoolean("players-can-shout", playersCanShout);
-		shoutRadius = plugin.getConfiguration().getInt("shout-radius", shoutRadius);
-		shoutPrefix = "§c" + plugin.getConfiguration().getString("shout-prefix", "[Shout]") + "§f ";
-		*/
-	}
-
-	@Override
+	
 	public void onPlayerJoin(PlayerJoinEvent event){
 		Player player = event.getPlayer();
 		ArrayList<ChannelInfo> chatChannels = plugin.dbHelper.getPlayerChannelsInfo(player);
-		
+		plugin.log.info("OH YEAAAHH!" + chatChannels.size());
 		if(chatChannels.size() > 0){
 			plugin.log.info("Player rejoined, loading channel data");
 			//Join them to each channel
@@ -60,16 +42,10 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener
 				}
 				ChatChannel chan = plugin.channelHelper.getChannelFromName(ci.name);
 				ChatChannelJoinEvent ccje = new ChatChannelJoinEvent(player, chan, "JOIN", true);
-		        plugin.getServer().getPluginManager().callEvent(ccje);
-				//plugin.channelHelper.joinChannel(player, ci.name,true);			
+		        plugin.getServer().getPluginManager().callEvent(ccje);	
 			}
 		} else {
 			plugin.log.info("New player connected, or someone with no channels... joining to default channels");
-			
-			//ChatChannel chan = plugin.channelHelper.joinChannel(event.getPlayer(), "Global");
-			
-			//plugin.dbHelper.setDefaultChannel(player, chan);
-			//plugin.channelHelper.joinChannel(event.getPlayer(), "PVP");
 
 			ChatChannel chan = plugin.channelHelper.getChannelFromName("Global");
 			ChatChannelJoinEvent ccje = new ChatChannelJoinEvent(player, chan, "JOIN", false);
@@ -81,7 +57,6 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener
 		}
 	}
 	
-	@Override
 	public void onPlayerQuit(PlayerQuitEvent event){
 		Player player = event.getPlayer();
 		//Get all the channels the player is in

@@ -107,16 +107,12 @@ import org.bukkit.util.config.Configuration;
  
    public void onDisable()
    {
-	   //Nothing needs to be done? 
-	   //	Maybe close DB connections?
 	   dbHelper.dbClose();
-	   
    }
  
    public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] args)
    {
-     String argString = StringHelper.join(args, 0);
- 
+     String argString = StringHelper.join(args, 0); //Put the messagedumpty back together again
      if (!(sender instanceof Player))
      {
        if (cmdLabel.toLowerCase().equals("say"))
@@ -127,7 +123,7 @@ import org.bukkit.util.config.Configuration;
          }
          return true;
        }
- 
+
        return false;
      }
  

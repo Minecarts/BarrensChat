@@ -35,7 +35,9 @@ public class DBHelper
 
   public void dbClose(){
       try{
-          this.connection.close();
+          if(this.connected && this.connection != null){
+              this.connection.close();
+          }
       } catch (SQLException e){
           e.printStackTrace();
       }
@@ -58,7 +60,7 @@ public class DBHelper
     catch (Exception e)
     {
       this.plugin.log.severe("****CRITICAL*** Unable to connect to MySQL DB");
-      e.printStackTrace();
+      //e.printStackTrace();
       return false;
     }
   }
@@ -71,6 +73,12 @@ public class DBHelper
     try
     {
        PreparedStatement ps = (PreparedStatement)this.statements.get("GetPlayerChannels");
+       if(ps == null){ //Query failed
+           plugin.log.warning("GetPlayerChannels query failed");
+           results.add(new ChannelInfo(0,"global", "Global", true));
+           results.add(new ChannelInfo(0,"pvp", "PVP", true));
+           return results;
+       }
        ps.setString(1, player.getName());
        ResultSet set = ps.executeQuery();
 
@@ -97,6 +105,16 @@ public class DBHelper
     try
     {
        PreparedStatement ps = (PreparedStatement)this.statements.get("GetDefaultChannel");
+       //If we're not connected to the DB, ps will be null,
+       //   so everything should go to global
+       if(ps == null){
+           plugin.log.warning("GetDefaultChannel query failed");
+           return new ChannelInfo(
+                   0, 
+                   "global", 
+                   "Global", 
+                   true);
+       }
        ps.setString(1, player.getName());
        ResultSet set = ps.executeQuery();
 
@@ -172,6 +190,14 @@ public class DBHelper
     try
     {
        PreparedStatement ps = (PreparedStatement)this.statements.get("GetChannelById");
+       if(ps == null){ //Query failed
+           plugin.log.warning("GetChannelById query failed");
+           return new ChannelInfo(
+                   0, 
+                   "global", 
+                   "Global", 
+                   true);
+       }
        ps.setString(1, player.getName());
        ps.setString(2, channel.name.toLowerCase());
        ResultSet set = ps.executeQuery();
@@ -198,6 +224,10 @@ public class DBHelper
     try
     {
        PreparedStatement ps = (PreparedStatement)this.statements.get("InsertChannel");
+       if(ps == null){ //Query failed
+           plugin.log.warning("InsertChannel query failed");
+           return;
+       }
        ps.setString(1, player.getName());
        ps.setInt(2, index);
        ps.setString(3, channel.name.toLowerCase());
@@ -246,6 +276,9 @@ public class DBHelper
     try
     {
        PreparedStatement ps = (PreparedStatement)this.statements.get("GetIgnoreList");
+       if(ps == null){
+           return ignoreList;
+       }
        ps.setString(1, player.getName());
        ResultSet set = ps.executeQuery();
 
@@ -293,6 +326,10 @@ public class DBHelper
     try
     {
        PreparedStatement ps = (PreparedStatement)this.statements.get("GetPlayerChannels");
+       if(ps == null){ //Query failed
+           plugin.log.warning("GetPlayerChannels query failed");
+           return 0;
+       }
        ps.setString(1, player.getName());
        ResultSet set = ps.executeQuery();
 
@@ -328,6 +365,10 @@ public class DBHelper
     try
     {
        PreparedStatement ps = (PreparedStatement)this.statements.get("GetNumChannels");
+       if(ps == null){ //Query failed
+           plugin.log.warning("GetNumChannels query failed");
+           return 0;
+       }
        ps.setString(1, player.getName());
        ResultSet set = ps.executeQuery();
        if (set.next()) {
