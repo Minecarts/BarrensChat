@@ -47,7 +47,7 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener
 	}
 
 	@Override
-	public void onPlayerJoin(PlayerEvent event){
+	public void onPlayerJoin(PlayerJoinEvent event){
 		Player player = event.getPlayer();
 		ArrayList<ChannelInfo> chatChannels = plugin.dbHelper.getPlayerChannelsInfo(player);
 		
@@ -82,7 +82,7 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener
 	}
 	
 	@Override
-	public void onPlayerQuit(PlayerEvent event){
+	public void onPlayerQuit(PlayerQuitEvent event){
 		Player player = event.getPlayer();
 		//Get all the channels the player is in
 		ArrayList<ChannelInfo> channelInfo = plugin.dbHelper.getPlayerChannelsInfo(player);
@@ -151,7 +151,7 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener
 	}
 	
 	@Override
-	public void onPlayerCommandPreprocess(PlayerChatEvent event)
+	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event)
 	{
 	//This will occur on all commands, we want to check to see if
 	//	it's a chat message to a specific channel, if so

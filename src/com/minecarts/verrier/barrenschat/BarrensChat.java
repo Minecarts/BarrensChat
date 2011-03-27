@@ -132,12 +132,10 @@ import org.bukkit.util.config.Configuration;
      }
  
      Player player = (Player)sender;
-     cmdLabel = cmdLabel.toLowerCase();
      try {
-       Commands cmdValue = Commands.valueOf(cmdLabel.toLowerCase());
        ChatChannelLeaveEvent ccle;
        ChatColor color;
-       switch (cmdValue) {
+       switch (Commands.valueOf(cmdLabel.toLowerCase())){
 	       case whisper:
 	       case w:
 	       case msg:
@@ -209,7 +207,7 @@ import org.bukkit.util.config.Configuration;
 	         }
 	         if ((args.length <= 0) || 
 	           (args[0].length() <= 0)) break;
-	         PlayerChatEvent sev = new PlayerChatEvent(Event.Type.PLAYER_CHAT, player, argString);
+	         PlayerChatEvent sev = new PlayerChatEvent(player, argString);
 	         getServer().getPluginManager().callEvent(sev);
 	 
 	         break;
