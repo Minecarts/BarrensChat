@@ -1,9 +1,10 @@
- package com.minecarts.verrier.barrenschat.event;
+ package com.minecarts.barrenschat.event;
  
- import com.minecarts.verrier.barrenschat.ChatChannel;
+ import com.minecarts.barrenschat.ChatChannel;
+
  import org.bukkit.entity.Player;
  import org.bukkit.event.Cancellable;
- import org.bukkit.event.Event;
+import org.bukkit.event.Event;
  
  public class ChatChannelAnnounceEvent extends Event
    implements Cancellable

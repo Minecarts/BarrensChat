@@ -1,4 +1,4 @@
- package com.minecarts.verrier.barrenschat;
+ package com.minecarts.barrenschat;
  
  import java.util.HashMap;
  import org.bukkit.entity.Player;

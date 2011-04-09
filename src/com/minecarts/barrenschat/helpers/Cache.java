@@ -1,11 +1,12 @@
- package com.minecarts.verrier.barrenschat.helpers;
+ package com.minecarts.barrenschat.helpers;
  
- import com.minecarts.verrier.barrenschat.BarrensChat;
- import com.minecarts.verrier.barrenschat.ChatChannel;
+ import com.minecarts.barrenschat.BarrensChat;
+import com.minecarts.barrenschat.ChatChannel;
+
  import java.util.ArrayList;
  import java.util.HashMap;
  import java.util.List;
- import org.bukkit.entity.Player;
+import org.bukkit.entity.Player;
  
  public class Cache
  {
@@ -18,11 +19,34 @@
      this.plugin = plugin;
    }
  
+   public class playerInfo {
+       playerInfo(){}
+   }
+
    public class channelInfo {
      private HashMap<Player, HashMap<ChatChannel, ChannelInfo>> channelInfoList = new HashMap<Player, HashMap<ChatChannel, ChannelInfo>>();
- 
+     private HashMap<String, ChannelInfo> defaultChannelList = new HashMap<String, ChannelInfo>();
+     
      public channelInfo() {  }
+
  
+     public ChannelInfo getPlayerDefaultChannel(Player player){
+         if(this.defaultChannelList.containsKey(player.getName())){
+             return this.defaultChannelList.get(player.getName());
+         } else {
+             return null;
+         }
+     }
+     public void setPlayerDefaultChannel(Player player, ChannelInfo ci){
+         this.defaultChannelList.put(player.getName(),ci);
+     }
+     public void clearPlayerDefaultChannel(Player player){
+         this.defaultChannelList.remove(player.getName());
+     }
+     
+     
+     
+     
      public ChannelInfo getPlayerChannelInfo(Player player, ChatChannel channel) { 
        if ((this.channelInfoList.containsKey(player)) && (((HashMap<ChatChannel,ChannelInfo>) this.channelInfoList.get(player)).containsKey(channel))) {
          return (ChannelInfo)((HashMap<ChatChannel,ChannelInfo>)this.channelInfoList.get(player)).get(channel);

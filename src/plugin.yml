@@ -1,8 +1,9 @@
 name: BarrensChat
-main: com.minecarts.verrier.barrenschat.BarrensChat
+main: com.minecarts.barrenschat.BarrensChat
 version: 1.0
 website: http://minecarts.com
 author: Verrier
+depend: [DBConnector]
 description: >
              A MMMORPG like chat plugin
 commands:

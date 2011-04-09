@@ -1,4 +1,4 @@
- package com.minecarts.verrier.barrenschat;
+ package com.minecarts.barrenschat;
  
  import java.util.ArrayList;
  import java.util.HashMap;

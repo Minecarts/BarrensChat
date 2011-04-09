@@ -1,4 +1,4 @@
- package com.minecarts.verrier.barrenschat.helpers;
+ package com.minecarts.barrenschat.helpers;
  
  public class ChannelInfo
  {

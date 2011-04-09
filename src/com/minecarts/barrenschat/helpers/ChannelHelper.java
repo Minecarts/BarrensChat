@@ -1,11 +1,12 @@
- package com.minecarts.verrier.barrenschat.helpers;
+ package com.minecarts.barrenschat.helpers;
  
- import com.minecarts.verrier.barrenschat.BarrensChat;
- import com.minecarts.verrier.barrenschat.ChatChannel;
+ import com.minecarts.barrenschat.BarrensChat;
+import com.minecarts.barrenschat.ChatChannel;
+
  import java.util.HashMap;
  import java.util.logging.Logger;
  import org.bukkit.ChatColor;
- import org.bukkit.entity.Player;
+import org.bukkit.entity.Player;
  
  public class ChannelHelper
  {

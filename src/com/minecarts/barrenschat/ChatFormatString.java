@@ -1,4 +1,4 @@
- package com.minecarts.verrier.barrenschat;
+ package com.minecarts.barrenschat;
  
  public class ChatFormatString
  {

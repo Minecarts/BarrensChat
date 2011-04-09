@@ -1,0 +1,47 @@
+package com.minecarts.barrenschat.command;
+
+import java.util.ArrayList;
+
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import com.minecarts.barrenschat.BarrensChat;
+import com.minecarts.barrenschat.ChatChannel;
+import com.minecarts.barrenschat.helpers.ChannelInfo;
+import com.minecarts.barrenschat.helpers.StringHelper;
+
+
+public class CommandCh extends CommandHandler{
+    
+    public CommandCh (BarrensChat plugin){
+        super(plugin);
+    }
+    
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if(sender instanceof Player){
+            Player player = (Player) sender;
+            if(args[0].equalsIgnoreCase("list")){
+                player.sendMessage("Channels you are currently in: "); 
+                ArrayList<ChannelInfo> channelInfoList = plugin.dbHelper.getPlayerChannelsInfo(player);
+                if(channelInfoList != null){
+                    for (ChannelInfo channelInfo : channelInfoList) {
+                        ChatChannel c = plugin.channelHelper.getChannelFromName(channelInfo.name);
+                        ChatColor color = ChatColor.valueOf(plugin.channelColors.get((channelInfo.index % plugin.channelColors.size())));
+                        String defaultFlag = "";
+                        if (channelInfo.isDefault.booleanValue()) defaultFlag = " (Default)";
+                        player.sendMessage(color + " [" + channelInfo.index + "] : " + c.name + defaultFlag);
+                    }
+                } else {
+                    player.sendMessage(ChatColor.GRAY + "You are not in any channels.");
+                }
+             } else {
+               player.sendMessage("Unknown ch command.");
+             }
+            return true;
+        }
+        return false;
+    }
+}

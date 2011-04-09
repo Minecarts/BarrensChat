@@ -1,13 +1,14 @@
- package com.minecarts.verrier.barrenschat;
+ package com.minecarts.barrenschat;
  
- import com.minecarts.verrier.barrenschat.helpers.Cache;
- import com.minecarts.verrier.barrenschat.helpers.Cache.ignoreList;
- import com.minecarts.verrier.barrenschat.helpers.ChannelInfo;
- import com.minecarts.verrier.barrenschat.helpers.DBHelper;
+ import com.minecarts.barrenschat.helpers.Cache;
+import com.minecarts.barrenschat.helpers.ChannelInfo;
+import com.minecarts.barrenschat.helpers.DBHelper;
+import com.minecarts.barrenschat.helpers.Cache.ignoreList;
+
  import java.util.ArrayList;
  import java.util.logging.Logger;
  import org.bukkit.ChatColor;
- import org.bukkit.entity.Player;
+import org.bukkit.entity.Player;
  
  public class ChatChannel
  {

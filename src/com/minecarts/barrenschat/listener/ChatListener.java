@@ -1,22 +1,16 @@
- package com.minecarts.verrier.barrenschat.listener;
+ package com.minecarts.barrenschat.listener;
  
- import com.herocraftonline.squallseed31.heroicdeath.DeathCertificate;
- import com.herocraftonline.squallseed31.heroicdeath.HeroicDeathEvent;
- import com.minecarts.verrier.barrenschat.BarrensChat;
- import com.minecarts.verrier.barrenschat.ChatChannel;
- import com.minecarts.verrier.barrenschat.WhisperTracker;
- import com.minecarts.verrier.barrenschat.event.*;
- import com.minecarts.verrier.barrenschat.helpers.Cache;
- import com.minecarts.verrier.barrenschat.helpers.Cache.ignoreList;
- import com.minecarts.verrier.barrenschat.helpers.ChannelHelper;
- import com.minecarts.verrier.barrenschat.helpers.DBHelper;
- import java.util.logging.Logger;
+import com.herocraftonline.squallseed31.heroicdeath.HeroicDeathEvent;
+import com.minecarts.barrenschat.BarrensChat;
+import com.minecarts.barrenschat.ChatChannel;
+import com.minecarts.barrenschat.event.*;
+import com.minecarts.barrenschat.listener.PlayerListener.RecipientData;
+
  import org.bukkit.ChatColor;
  import org.bukkit.entity.Player;
  import org.bukkit.event.CustomEventListener;
  import org.bukkit.event.Event;
  
- import com.minecarts.verrier.barrenschat.listener.PlayerListener.RecipientData;
  
  public class ChatListener extends CustomEventListener
  {
@@ -128,7 +122,6 @@
        HeroicDeathEvent he = (HeroicDeathEvent)event;
        ChatChannel chan = this.plugin.channelHelper.getChannelFromName("PVP");
        chan.msg(he.getDeathCertificate().getMessage());
-       he.getDeathCertificate().setMessage("");
        break;
      }
    }

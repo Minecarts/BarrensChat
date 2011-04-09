@@ -1,4 +1,4 @@
- package com.minecarts.verrier.barrenschat.event;
+ package com.minecarts.barrenschat.event;
  
  import org.bukkit.entity.Player;
  import org.bukkit.event.Cancellable;

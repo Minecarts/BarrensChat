@@ -1,23 +1,26 @@
- package com.minecarts.verrier.barrenschat.event;
+ package com.minecarts.barrenschat.event;
  
- import com.minecarts.verrier.barrenschat.ChatChannel;
+ import com.minecarts.barrenschat.ChatChannel;
+
  import org.bukkit.entity.Player;
  import org.bukkit.event.Cancellable;
- import org.bukkit.event.Event;
+import org.bukkit.event.Event;
  
- public class ChatChannelMessageEvent extends Event
+ public class ChatChannelJoinEvent extends Event
    implements Cancellable
  {
    private Player player;
    private ChatChannel channel;
-   private String message;
+   private String reason;
+   private boolean rejoin;
    private boolean cancel = false;
  
-   public ChatChannelMessageEvent(Player player, ChatChannel channel, String message) {
-     super("ChatChannelMessageEvent");
+   public ChatChannelJoinEvent(Player player, ChatChannel channel, String reason, boolean rejoin) {
+     super("ChatChannelJoinEvent");
      this.player = player;
      this.channel = channel;
-     this.message = message;
+     this.reason = reason;
+     this.rejoin = rejoin;
    }
  
    public boolean isCancelled()
@@ -36,11 +39,12 @@
    public ChatChannel getChannel() {
      return this.channel;
    }
- 
-   public String getMessage() {
-     return this.message;
+   
+   public String getReason() {
+     return this.reason;
    }
-   public void setMessage(String message) {
-     this.message = message;
+   
+   public boolean getRejoin() {
+     return this.rejoin;
    }
  }

@@ -1,9 +1,9 @@
- package com.minecarts.verrier.barrenschat.event;
+ package com.minecarts.barrenschat.event;
  
  import java.util.ArrayList;
 
-import com.minecarts.verrier.barrenschat.ChatChannel;
-import com.minecarts.verrier.barrenschat.listener.PlayerListener.RecipientData;
+import com.minecarts.barrenschat.ChatChannel;
+import com.minecarts.barrenschat.listener.PlayerListener.RecipientData;
 
  import org.bukkit.entity.Player;
  import org.bukkit.event.Cancellable;

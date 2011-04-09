@@ -1,22 +1,18 @@
-package com.minecarts.verrier.barrenschat.listener;
+package com.minecarts.barrenschat.listener;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bukkit.*;
-import org.bukkit.entity.*;
-import org.bukkit.event.Event.Type;
+import org.bukkit.entity.Player;
 import org.bukkit.event.player.*;
 
 import org.bukkit.ChatColor;
-import org.omg.PortableServer.POAPackage.ObjectAlreadyActiveHelper;
 
-import com.minecarts.verrier.barrenschat.BarrensChat;
-import com.minecarts.verrier.barrenschat.ChatChannel;
-import com.minecarts.verrier.barrenschat.event.*;
-import com.minecarts.verrier.barrenschat.helpers.ChannelInfo;
+import com.minecarts.barrenschat.BarrensChat;
+import com.minecarts.barrenschat.ChatChannel;
+import com.minecarts.barrenschat.event.*;
+import com.minecarts.barrenschat.helpers.ChannelInfo;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 import org.bukkit.util.Vector;
@@ -32,7 +28,6 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener
 	public void onPlayerJoin(PlayerJoinEvent event){
 		Player player = event.getPlayer();
 		ArrayList<ChannelInfo> chatChannels = plugin.dbHelper.getPlayerChannelsInfo(player);
-		plugin.log.info("OH YEAAAHH!" + chatChannels.size());
 		if(chatChannels.size() > 0){
 			plugin.log.info("Player rejoined, loading channel data");
 			//Join them to each channel
