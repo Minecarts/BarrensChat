@@ -27,7 +27,7 @@ public class CommandUnignore extends CommandHandler{
             boolean didUnignore = false;
             if (ignoreMatches.size() > 0) {
               for (Player unignore : ignoreMatches) {
-                if (ignoreList.contains(unignore.toString())) {
+                if (ignoreList.contains(unignore.getName())) {
                   player.sendMessage("You have unignored " + unignore.getName() + ".");
                   plugin.dbHelper.removeIgnore(player, unignore);
                   didUnignore = true;
