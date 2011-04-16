@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 public class CacheIgnore extends CacheBase{
     private static HashMap<String, List<String>> ignoreList = new HashMap<String, List<String>>();
     public static List<String> getIgnoreList(Player player) {
-        return ignoreList.get(player);
+        return ignoreList.get(player.getName());
     }
     public static boolean isIgnoring(Player player, Player ignore) {
         if (!ignoreList.containsKey(player.getName())) {
