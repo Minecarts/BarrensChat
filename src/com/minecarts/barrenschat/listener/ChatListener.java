@@ -4,12 +4,13 @@ import com.herocraftonline.squallseed31.heroicdeath.HeroicDeathEvent;
 import com.minecarts.barrenschat.BarrensChat;
 import com.minecarts.barrenschat.ChatChannel;
 import com.minecarts.barrenschat.event.*;
+import com.minecarts.barrenschat.helpers.ChannelInfo;
 import com.minecarts.barrenschat.listener.PlayerListener.RecipientData;
 
  import org.bukkit.ChatColor;
  import org.bukkit.entity.Player;
  import org.bukkit.event.CustomEventListener;
- import org.bukkit.event.Event;
+import org.bukkit.event.Event;
  
  
  public class ChatListener extends CustomEventListener
@@ -30,7 +31,8 @@ import com.minecarts.barrenschat.listener.PlayerListener.RecipientData;
      ChatChannelAnnounceEvent, 
      ChatLocalMessageEvent,
      IgnoreListAddEvent, 
-     IgnoreListRemoveEvent, 
+     IgnoreListRemoveEvent,
+     ChatChannelDefaultChangeEvent,
  
      HeroicDeathEvent;
    }
@@ -54,6 +56,7 @@ import com.minecarts.barrenschat.listener.PlayerListener.RecipientData;
        String msg = ((ChatWhisperEvent)event).getMessage();
  
        if (this.plugin.cache.ignoreList.isIgnoring(receiver, sender)) {
+         ((ChatWhisperEvent)event).setCancelled(true); //We're listening in monitor mode, and canceling, VERY VERY BAD. SHOULD NOT DO THIS.
          sender.sendMessage(ChatColor.RED + receiver.getName() + " is ignoring you.");
        }
        else
@@ -118,6 +121,19 @@ import com.minecarts.barrenschat.listener.PlayerListener.RecipientData;
 				}
     	 }
     	 break;
+     case ChatChannelDefaultChangeEvent:
+     {
+         ChatChannelDefaultChangeEvent ccdce = (ChatChannelDefaultChangeEvent)event;
+
+         Player player = ccdce.getPlayer();
+         ChatChannel chan = ccdce.getChannel();
+
+         ChannelInfo defaultChannelInfo = this.plugin.dbHelper.getDefaultChannelInfo(player);
+         if ((defaultChannelInfo == null) || (defaultChannelInfo.id != chan.getId())) {
+           this.plugin.dbHelper.setDefaultChannel(player, chan);
+         }
+         break;
+     }
      case HeroicDeathEvent:
        HeroicDeathEvent he = (HeroicDeathEvent)event;
        ChatChannel chan = this.plugin.channelHelper.getChannelFromName("PVP");

@@ -67,33 +67,7 @@ import org.bukkit.entity.Player;
      channel = joinChannel(player, channel, rejoining);
      return channel;
    }
- 
-   
-   
-   
-   
-   public void attemptDefaultChannelSet(Player player, ChatChannel chan)
-   {
-     ChannelInfo defaultChannelInfo = this.plugin.dbHelper.getDefaultChannelInfo(player);
- 
-     if ((defaultChannelInfo == null) || (defaultChannelInfo.id != chan.getId())) {
-       this.plugin.dbHelper.setDefaultChannel(player, chan);
- 
-       ChannelInfo channelInfo = this.plugin.dbHelper.getChannelInfoByChannel(player, chan);
- 
-       player.sendMessage(ChatColor.DARK_GRAY + "Default chat now sending to [" + channelInfo.index + "] " + chan.name + ".");
- 
-       player.sendMessage(ChatColor.DARK_GRAY + " Type /say to chat with nearby players.");
-     }
-     else
-     {
-       this.plugin.getClass();
-     }
-   }
- 
-   
-   
-   
+
    public ChatChannel getChannelFromName(String channelName)
    {
      if (this.plugin.channelList.containsKey(channelName.toLowerCase())) {

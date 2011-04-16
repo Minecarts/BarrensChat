@@ -139,7 +139,9 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener
 					ChatChannelMessageEvent ccme = new ChatChannelMessageEvent(player,chan,args[1]);
 					plugin.getServer().getPluginManager().callEvent(ccme);
 				}
-				plugin.channelHelper.attemptDefaultChannelSet(player,chan); //And try making this the default channel if need be
+				ChatChannelDefaultChangeEvent ccdce = new ChatChannelDefaultChangeEvent(player, chan,channelNum);
+                plugin.getServer().getPluginManager().callEvent(ccdce);  
+
 				event.setCancelled(true); //And cancel the event because the command has been handled
 			}
 		} catch (java.lang.NumberFormatException ex2){
