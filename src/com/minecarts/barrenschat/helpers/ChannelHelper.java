@@ -1,22 +1,19 @@
- package com.minecarts.barrenschat.helpers;
+package com.minecarts.barrenschat.helpers;
  
- import com.minecarts.barrenschat.BarrensChat;
+import com.minecarts.barrenschat.BarrensChat;
 import com.minecarts.barrenschat.ChatChannel;
 
- import java.util.HashMap;
- import java.util.logging.Logger;
- import org.bukkit.ChatColor;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
  
- public class ChannelHelper
- {
+public class ChannelHelper {
    BarrensChat plugin;
    public ChannelHelper(BarrensChat plugin)
    {
      this.plugin = plugin;
    }
- 
-   
+
+
    //Join a player to a channel either by a channelName or a channel itself
    //	The rejoining flag will skip checking if they can join the channel which 
    //	is used when a player reconnects to the server and we rejoin them to their channels
@@ -25,10 +22,10 @@ import org.bukkit.entity.Player;
      return joinChannel(player, channelName, false);
    }
    public ChatChannel joinChannel(Player player, ChatChannel channel) {
-     return joinChannel(player, channel, false);
+     return joinChannel(player, channel, false, false);
    }
  
-   public ChatChannel joinChannel(Player player, ChatChannel channel, boolean rejoining)
+   public ChatChannel joinChannel(Player player, ChatChannel channel, boolean rejoining, boolean silent)
    {
      String reason = null;
  
@@ -42,7 +39,7 @@ import org.bukkit.entity.Player;
          if (!rejoining) {
            this.plugin.dbHelper.addPlayerChannel(player, channel, nextIndex);
          }
-         channel.join(player, !rejoining); //Handle alerting joining the channel
+         channel.join(player, !rejoining, silent); //Handle alerting joining the channel
        }
      } else {
        this.plugin.log.info(player.getName() + " could not join channel " + channel.name + ": " + reason);
@@ -54,8 +51,20 @@ import org.bukkit.entity.Player;
      return channel;
    }
  
-   public ChatChannel joinChannel(Player player, String channelName, boolean rejoining)
-   {
+   public ChatChannel joinChannel(Player player, String channelName, boolean rejoining, boolean silent){
+       ChatChannel channel;
+       if (!this.plugin.channelList.containsKey(channelName.toLowerCase())) {
+         channel = createChannel(channelName);
+       } else {
+         channel = (ChatChannel)this.plugin.channelList.get(channelName.toLowerCase());
+         this.plugin.getClass();
+       }
+       return joinChannel(player, channel, rejoining, true);
+   }
+   public ChatChannel joinChannel(Player player, ChatChannel channel, boolean rejoining) {
+     return joinChannel(player, channel, rejoining, false);
+   }
+   public ChatChannel joinChannel(Player player, String channelName, boolean rejoining) {
      ChatChannel channel;
      if (!this.plugin.channelList.containsKey(channelName.toLowerCase())) {
        channel = createChannel(channelName);
@@ -64,9 +73,9 @@ import org.bukkit.entity.Player;
        this.plugin.getClass();
      }
  
-     channel = joinChannel(player, channel, rejoining);
-     return channel;
+     return joinChannel(player, channel, rejoining, false);
    }
+
 
    public ChatChannel getChannelFromName(String channelName)
    {

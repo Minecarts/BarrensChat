@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 import com.minecarts.barrenschat.BarrensChat;
 import com.minecarts.barrenschat.ChatChannel;
 import com.minecarts.barrenschat.helpers.ChannelInfo;
-import com.minecarts.barrenschat.helpers.StringHelper;
 
 
 public class CommandCh extends CommandHandler{

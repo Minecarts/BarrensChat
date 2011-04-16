@@ -2,6 +2,7 @@ package com.minecarts.barrenschat.helpers;
 
 import com.minecarts.barrenschat.BarrensChat;
 import com.minecarts.barrenschat.ChatChannel;
+import com.minecarts.barrenschat.cache.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -61,7 +62,7 @@ public class DBHelper {
   public ChannelInfo getDefaultChannelInfo(Player player){
       
       //Check the cache
-      ChannelInfo info = this.plugin.cache.channelInfo.getPlayerDefaultChannel(player);
+      ChannelInfo info = CacheChannel.getPlayerDefaultChannel(player);
       if (info != null) {
           return info;
       }
@@ -78,21 +79,19 @@ public class DBHelper {
           }
           ps.setString(1, player.getName());
           ResultSet set = ps.executeQuery();
-
+          ChannelInfo ci = null;
           if (set.next()) {
-              ChannelInfo ci = new ChannelInfo(
+              ci = new ChannelInfo(
                       Integer.valueOf(set.getInt("channelIndex")), 
                       set.getString("channelId"), 
                       set.getString("channelName"), 
                       Boolean.valueOf(set.getBoolean("isDefault")));
-              
-              this.plugin.cache.channelInfo.setPlayerDefaultChannel(player,ci);
-              
+              CacheChannel.setPlayerDefaultChannel(player,ci);
               set.close();
-              ps.close();
-              conn.close();
-              return ci;
           }
+          ps.close();
+          conn.close();
+          return ci;
       } catch (SQLException e) {
           e.printStackTrace();
       }
@@ -124,7 +123,7 @@ public class DBHelper {
           ps.setString(1, player.getName());
           ps.execute();
 
-          this.plugin.cache.channelInfo.clearPlayerDefaultChannel(player);
+          CacheChannel.clearPlayerDefaultChannel(player);
           
           ps.close();
           conn.close();
@@ -161,7 +160,7 @@ public class DBHelper {
   }
 
   public ChannelInfo getChannelInfoByChannel(Player player, ChatChannel channel) {
-      ChannelInfo info = this.plugin.cache.channelInfo.getPlayerChannelInfo(player, channel);
+      ChannelInfo info = CacheChannel.getPlayerChannelInfo(player, channel);
       if (info != null) {
           return info;
       }
@@ -169,27 +168,26 @@ public class DBHelper {
           Connection conn = this.getConnection();
           PreparedStatement ps = conn.prepareStatement("SELECT * FROM player_channels WHERE playerName=? AND channelId=? LIMIT 1");
           if(ps == null){ //Query failed
-              plugin.log.warning("GetChannelById query failed");
-              return new ChannelInfo(0,"global", "Global", true);
-       }
-       ps.setString(1, player.getName());
-       ps.setString(2, channel.name.toLowerCase());
-       ResultSet set = ps.executeQuery();
-
-       if (set.next()) {
-         ChannelInfo ci = new ChannelInfo(
-           Integer.valueOf(set.getInt("channelIndex")), 
-           set.getString("channelId"), 
-           set.getString("channelName"), 
-           Boolean.valueOf(set.getBoolean("isDefault")));
-         this.plugin.cache.channelInfo.setPlayerChannelInfo(player, channel, ci);
-
+               conn.close();
+               plugin.log.warning("GetChannelById query failed");
+               return new ChannelInfo(0,"global", "Global", true);
+          }
+          ps.setString(1, player.getName());
+          ps.setString(2, channel.name.toLowerCase());
+          ResultSet set = ps.executeQuery();
+          ChannelInfo ci = null;
+           if (set.next()) {
+                 ci = new ChannelInfo(
+                   Integer.valueOf(set.getInt("channelIndex")), 
+                   set.getString("channelId"), 
+                   set.getString("channelName"), 
+                   Boolean.valueOf(set.getBoolean("isDefault")));
+                 CacheChannel.setPlayerChannelInfo(player, channel, ci);
+           }
          set.close();
          ps.close();
          conn.close();
-
          return ci;
-      }
     } catch (SQLException e) {
        e.printStackTrace();
     }
@@ -201,6 +199,7 @@ public class DBHelper {
         Connection conn = this.getConnection();
         PreparedStatement ps = conn.prepareStatement("INSERT INTO player_channels(playerName,channelIndex,channelId,channelName,isDefault) VALUES (?,?,?,?,0)");
         if(ps == null){ //Query failed
+            conn.close();
             plugin.log.warning("InsertChannel query failed");
             return;
         }
@@ -225,7 +224,7 @@ public class DBHelper {
           ps.setString(2, channel.name.toLowerCase());
           ps.execute();
 
-          this.plugin.cache.channelInfo.invalidatePlayer(player);
+          CacheChannel.invalidatePlayer(player);
 
           ps.close();
           conn.close();
@@ -292,7 +291,7 @@ public class DBHelper {
           ps.setString(1, player.getName());
           ps.setString(2, ignore.getName());
           ps.execute();
-          this.plugin.cache.ignoreList.addIgnore(player, ignore);
+          CacheIgnore.addIgnore(player, ignore);
 
           ps.close();
           conn.close();
@@ -310,7 +309,7 @@ public class DBHelper {
           ps.setString(2, ignore.getName());
           ps.execute();
 
-          this.plugin.cache.ignoreList.removeIgnore(player, ignore);
+          CacheIgnore.removeIgnore(player, ignore);
 
           ps.close();
           conn.close();

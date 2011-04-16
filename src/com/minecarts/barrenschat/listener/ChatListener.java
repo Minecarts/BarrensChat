@@ -6,13 +6,13 @@ import com.minecarts.barrenschat.ChatChannel;
 import com.minecarts.barrenschat.event.*;
 import com.minecarts.barrenschat.helpers.ChannelInfo;
 import com.minecarts.barrenschat.listener.PlayerListener.RecipientData;
+import com.minecarts.barrenschat.cache.CacheIgnore;
 
- import org.bukkit.ChatColor;
- import org.bukkit.entity.Player;
- import org.bukkit.event.CustomEventListener;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+import org.bukkit.event.CustomEventListener;
 import org.bukkit.event.Event;
- 
- 
+
  public class ChatListener extends CustomEventListener {
    private BarrensChat plugin;
  
@@ -97,7 +97,7 @@ import org.bukkit.event.Event;
              if(e.isCancelled()) break;
 
              for(RecipientData rd : e.getRecipients()){
-                 if (this.plugin.cache.ignoreList.isIgnoring(rd.player, e.getPlayer())) { continue; }
+                 if (CacheIgnore.isIgnoring(rd.player, e.getPlayer())) { continue; }
                  if(rd.distance <= 75){
                      rd.player.sendMessage(ChatColor.WHITE + e.getMessage());
                  } else if(rd.distance <= 200){

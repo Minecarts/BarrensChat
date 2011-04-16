@@ -3,13 +3,8 @@ package com.minecarts.barrenschat.command;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
 import java.util.List;
-
 import com.minecarts.barrenschat.BarrensChat;
-import com.minecarts.barrenschat.ChatChannel;
-import com.minecarts.barrenschat.event.ChatChannelJoinEvent;
-import com.minecarts.barrenschat.helpers.StringHelper;
 
 
 public class CommandUnignore extends CommandHandler{

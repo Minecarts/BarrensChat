@@ -1,18 +1,13 @@
- package com.minecarts.barrenschat.event;
- 
- import com.minecarts.barrenschat.ChatChannel;
+package com.minecarts.barrenschat.event;
 
- import org.bukkit.entity.Player;
- import org.bukkit.event.Cancellable;
+import com.minecarts.barrenschat.ChatChannel;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
- 
- public class ChatChannelAnnounceEvent extends Event
-   implements Cancellable
- {
-   private Player player;
-   private ChatChannel channel;
-   private String message;
-   private boolean cancel = false;
+
+public class ChatChannelAnnounceEvent extends Event implements Cancellable {
+    private ChatChannel channel;
+    private String message;
+    private boolean cancel = false;
  
    public ChatChannelAnnounceEvent(ChatChannel channel, String message) {
      super("ChatChannelAnnounceEvent");

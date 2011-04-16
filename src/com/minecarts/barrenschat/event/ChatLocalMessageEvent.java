@@ -2,16 +2,13 @@
  
  import java.util.ArrayList;
 
-import com.minecarts.barrenschat.ChatChannel;
 import com.minecarts.barrenschat.listener.PlayerListener.RecipientData;
 
- import org.bukkit.entity.Player;
- import org.bukkit.event.Cancellable;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
  
- public class ChatLocalMessageEvent extends Event
-   implements Cancellable
- {
+public class ChatLocalMessageEvent extends Event implements Cancellable {
    private Player player;
    private ArrayList<RecipientData> recipients;
    private String message;

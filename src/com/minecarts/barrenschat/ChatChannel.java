@@ -1,13 +1,10 @@
  package com.minecarts.barrenschat;
  
- import com.minecarts.barrenschat.helpers.Cache;
 import com.minecarts.barrenschat.helpers.ChannelInfo;
-import com.minecarts.barrenschat.helpers.DBHelper;
-import com.minecarts.barrenschat.helpers.Cache.ignoreList;
+import com.minecarts.barrenschat.cache.CacheIgnore;
 
- import java.util.ArrayList;
- import java.util.logging.Logger;
- import org.bukkit.ChatColor;
+import java.util.ArrayList;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
  
  public class ChatChannel
@@ -60,10 +57,11 @@ import org.bukkit.entity.Player;
    }
  
    public void join(Player player){
-	   this.join(player,true);
+	   this.join(player,true,false);
    }
-   public void join(Player player, boolean alert)
-   {
+   //Alert is for alerting other players
+   //Silent is for self joining
+   public void join(Player player, boolean alert, boolean silent){
 	 //Don't display join and leave messages for Global or PVP
 	   if(alert){
 		 msg(player.getName() + " joined the channel.");
@@ -73,8 +71,9 @@ import org.bukkit.entity.Player;
      ChannelInfo channelInfo = this.plugin.dbHelper.getChannelInfoByChannel(player, this);
      ChatColor color = ChatColor.valueOf(this.plugin.channelColors.get((channelInfo.index % this.plugin.channelColors.size())));
      
- 
-     player.sendMessage(String.format(ChatFormatString.SELF_CHANNEL_JOIN, color, channelInfo.index, this.name));
+     if(!silent){
+         player.sendMessage(String.format(ChatFormatString.SELF_CHANNEL_JOIN, color, channelInfo.index, this.name));
+     }
    }
  
    public void leave(Player player){
@@ -103,8 +102,7 @@ import org.bukkit.entity.Player;
      }
    }
  
-   public void msg(String msg)
-   {
+   public void msg(String msg) {
      for (Player p : this.playerList) {
        ChannelInfo channelInfo = this.plugin.dbHelper.getChannelInfoByChannel(p, this);
        ChatColor color = ChatColor.valueOf(this.plugin.channelColors.get((channelInfo.index % this.plugin.channelColors.size())));
@@ -112,12 +110,9 @@ import org.bukkit.entity.Player;
      }
    }
  
-   public void chat(Player sender, String msg)
-   {
-     for (Player p : this.playerList)
-     {
-       if (this.plugin.cache.ignoreList.isIgnoring(p, sender))
-       {
+   public void chat(Player sender, String msg) {
+     for (Player p : this.playerList) {
+       if (CacheIgnore.isIgnoring(p, sender)) {
          continue;
        }
        ChannelInfo channelInfo = this.plugin.dbHelper.getChannelInfoByChannel(p, this);
@@ -128,8 +123,7 @@ import org.bukkit.entity.Player;
      }
    }
  
-   public ArrayList<String> getPlayerList()
-   {
+   public ArrayList<String> getPlayerList() {
      ArrayList<String> players = new ArrayList<String>();
      for (Player p : this.playerList) {
        if (p.getName() == this.moderator.getName())

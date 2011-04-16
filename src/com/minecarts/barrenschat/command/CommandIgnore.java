@@ -1,5 +1,6 @@
 package com.minecarts.barrenschat.command;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -7,9 +8,7 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 import com.minecarts.barrenschat.BarrensChat;
-import com.minecarts.barrenschat.ChatChannel;
-import com.minecarts.barrenschat.event.ChatChannelJoinEvent;
-import com.minecarts.barrenschat.helpers.StringHelper;
+import com.minecarts.barrenschat.cache.CacheIgnore;
 
 
 public class CommandIgnore extends CommandHandler{
@@ -34,8 +33,12 @@ public class CommandIgnore extends CommandHandler{
 			                player.sendMessage("You cannot ignore admins.");
 			                plugin.log.info(player.getName() + " tried to ignore admin " + ignore.getName());
 			            } else {
-			                player.sendMessage("You are now ignoring " + ignore.getName() + ".");
-			                plugin.dbHelper.addIgnore(player, ignore);
+			                if(CacheIgnore.isIgnoring(player, ignore)){
+			                    player.sendMessage("You are already ignoring " + ignore.getName() + ". Use " + ChatColor.GOLD + "/unignore " + ignore.getName() + ChatColor.WHITE + " to unignore.");
+			                } else {
+                                plugin.dbHelper.addIgnore(player, ignore);
+                                player.sendMessage("You are now ignoring " + ignore.getName() + ".");
+			                }
 			            }
 			        }
 			    } else {
