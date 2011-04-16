@@ -34,7 +34,8 @@ public class CommandIgnore extends CommandHandler{
 			                plugin.log.info(player.getName() + " tried to ignore admin " + ignore.getName());
 			            } else {
 			                if(CacheIgnore.isIgnoring(player, ignore)){
-			                    player.sendMessage("You are already ignoring " + ignore.getName() + ". Use " + ChatColor.GOLD + "/unignore " + ignore.getName() + ChatColor.WHITE + " to unignore.");
+			                    player.sendMessage("You have unignored " + ignore.getName() + ".");
+			                    plugin.dbHelper.removeIgnore(player, ignore);
 			                } else {
                                 plugin.dbHelper.addIgnore(player, ignore);
                                 player.sendMessage("You are now ignoring " + ignore.getName() + ".");
