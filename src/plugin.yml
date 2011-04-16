@@ -11,7 +11,7 @@ commands:
     description: The main command to access all BarrensChat internal commands
     usage: /<command>
   whisper:
-    aliases: [w,msg]
+    aliases: [w,msg,t,m]
     description: Privately message a player
     usage: /<command> [player] [msg]
   say:
