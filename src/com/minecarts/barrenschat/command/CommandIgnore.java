@@ -21,8 +21,16 @@ public class CommandIgnore extends CommandHandler{
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if(sender instanceof Player){
 			Player player = (Player) sender;
-			if (args[0].equalsIgnoreCase("list")) {
-			    player.sendMessage("TODO: Ignore list display.");
+			if (args.length == 0 || args[0].equalsIgnoreCase("list")){
+			    java.util.List<String> ignoreList = CacheIgnore.getIgnoreList(player);
+			    if(ignoreList != null && ignoreList.size() > 0){
+			        player.sendMessage("Players ignored: ");
+			        for(String p : ignoreList){
+			            player.sendMessage(ChatColor.GRAY + " - " + p);
+			        }
+			    } else {
+			        player.sendMessage("You are not ignoring anyone. Type /ignore <player> to ignore them.");
+			    }
 			} else {
 			    List<Player> ignoreMatches = server.matchPlayer(args[0]);
 			    if (ignoreMatches.size() > 0) {
