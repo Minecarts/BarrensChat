@@ -194,10 +194,10 @@ public class DBHelper {
     return null;
   }
 
-  public void addPlayerChannel(Player player, ChatChannel channel, int index){
+  public void addPlayerChannel(Player player, ChatChannel channel, int index, boolean isDefault){
     try{
         Connection conn = this.getConnection();
-        PreparedStatement ps = conn.prepareStatement("INSERT INTO player_channels(playerName,channelIndex,channelId,channelName,isDefault) VALUES (?,?,?,?,0)");
+        PreparedStatement ps = conn.prepareStatement("INSERT INTO player_channels(playerName,channelIndex,channelId,channelName,isDefault) VALUES (?,?,?,?,?)");
         if(ps == null){ //Query failed
             conn.close();
             plugin.log.warning("InsertChannel query failed");
@@ -207,6 +207,11 @@ public class DBHelper {
         ps.setInt(2, index);
         ps.setString(3, channel.name.toLowerCase());
         ps.setString(4, channel.name);
+        if(isDefault){
+            ps.setInt(5, 1);
+        } else {
+            ps.setInt(5, 0);
+        }
         ps.execute();
         
         ps.close();

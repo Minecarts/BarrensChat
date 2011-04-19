@@ -16,30 +16,19 @@ public class ChannelHelper {
 
    //Join a player to a channel either by a channelName or a channel itself
    //	The rejoining flag will skip checking if they can join the channel which 
-   //	is used when a player reconnects to the server and we rejoin them to their channels
-   public ChatChannel joinChannel(Player player, String channelName)
-   {
-     return joinChannel(player, channelName, false);
-   }
-   public ChatChannel joinChannel(Player player, ChatChannel channel) {
-     return joinChannel(player, channel, false, false);
-   }
- 
-   public ChatChannel joinChannel(Player player, ChatChannel channel, boolean rejoining, boolean silent)
+   //	is used when a player reconnects to the server and we rejoin them to their channels 
+   public ChatChannel joinChannel(Player player, ChatChannel channel, boolean rejoining, boolean alertSelf, boolean alertOthers, boolean setDefault)
    {
      String reason = null;
  
-     if (!rejoining) {
+     if (!rejoining){
        reason = channel.canPlayerJoin(player);
      }
      if (reason == null) {
        int nextIndex = this.plugin.dbHelper.getNextChannelIndex(player);
-       if (nextIndex != -1)
-       {
-         if (!rejoining) {
-           this.plugin.dbHelper.addPlayerChannel(player, channel, nextIndex);
-         }
-         channel.join(player, !rejoining, silent); //Handle alerting joining the channel
+       if (nextIndex != -1) {
+         if (!rejoining) this.plugin.dbHelper.addPlayerChannel(player, channel, nextIndex, setDefault);
+         channel.join(player, alertOthers, alertSelf); //Handle alerting joining the channel
        }
      } else {
        this.plugin.log.info(player.getName() + " could not join channel " + channel.name + ": " + reason);
@@ -51,31 +40,16 @@ public class ChannelHelper {
      return channel;
    }
  
-   public ChatChannel joinChannel(Player player, String channelName, boolean rejoining, boolean silent){
+   public ChatChannel joinChannel(Player player, String channelName, boolean rejoining, boolean alertSelf, boolean alertOthers, boolean setDefault){
        ChatChannel channel;
        if (!this.plugin.channelList.containsKey(channelName.toLowerCase())) {
          channel = createChannel(channelName);
        } else {
          channel = (ChatChannel)this.plugin.channelList.get(channelName.toLowerCase());
-         this.plugin.getClass();
-       }
-       return joinChannel(player, channel, rejoining, true);
-   }
-   public ChatChannel joinChannel(Player player, ChatChannel channel, boolean rejoining) {
-     return joinChannel(player, channel, rejoining, false);
-   }
-   public ChatChannel joinChannel(Player player, String channelName, boolean rejoining) {
-     ChatChannel channel;
-     if (!this.plugin.channelList.containsKey(channelName.toLowerCase())) {
-       channel = createChannel(channelName);
-     } else {
-       channel = (ChatChannel)this.plugin.channelList.get(channelName.toLowerCase());
-       this.plugin.getClass();
-     }
- 
-     return joinChannel(player, channel, rejoining, false);
-   }
 
+       }
+       return joinChannel(player, channel, rejoining, alertSelf, alertOthers, setDefault);
+   }
 
    public ChatChannel getChannelFromName(String channelName)
    {

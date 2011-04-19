@@ -36,19 +36,24 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener
 					plugin.log.info("Joining " + player.getName() + " to " + ci.name);
 				}
 				ChatChannel chan = plugin.channelHelper.getChannelFromName(ci.name);
-				ChatChannelJoinEvent ccje = new ChatChannelJoinEvent(player, chan, "JOIN", true);
+				ChatChannelJoinEvent ccje = new ChatChannelJoinEvent(player, chan, "JOIN",true,true,true,false);
 		        plugin.getServer().getPluginManager().callEvent(ccje);	
 			}
 		} else {
 			plugin.log.info("New player connected, or someone with no channels... joining to default channels");
 
 			ChatChannel chan = plugin.channelHelper.getChannelFromName("Global");
-			ChatChannelJoinEvent ccje = new ChatChannelJoinEvent(player, chan, "JOIN", false);
+			ChatChannelJoinEvent ccje = new ChatChannelJoinEvent(player, chan, "JOIN",false,true,false,true);
+	        plugin.getServer().getPluginManager().callEvent(ccje);
+
+	        //ChatChannelDefaultChangeEvent ccdce = new ChatChannelDefaultChangeEvent(player, chan,0);
+            //plugin.getServer().getPluginManager().callEvent(ccdce);
+
+	        chan = plugin.channelHelper.getChannelFromName("PVP");
+			ccje = new ChatChannelJoinEvent(player, chan, "JOIN",false,true,false,false);
 	        plugin.getServer().getPluginManager().callEvent(ccje);
 	        
-	        chan = plugin.channelHelper.getChannelFromName("PVP");
-			ccje = new ChatChannelJoinEvent(player, chan, "JOIN", false);
-	        plugin.getServer().getPluginManager().callEvent(ccje);
+	       
 		}
 	}
 	

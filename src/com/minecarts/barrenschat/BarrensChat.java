@@ -100,7 +100,8 @@ import org.bukkit.util.config.Configuration;
      for (Player p : getServer().getOnlinePlayers()) {
        ArrayList<ChannelInfo> chatChannels = this.dbHelper.getPlayerChannelsInfo(p);
        for (ChannelInfo ci : chatChannels) {
-         this.channelHelper.joinChannel(p, ci.name, true,true);
+         this.channelHelper.joinChannel(p, ci.name, true,true,true,false);
+         
        }
        CacheIgnore.loadListFromDB(p); //Load the ignore list for this player into the cache
      }

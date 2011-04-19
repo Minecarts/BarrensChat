@@ -57,40 +57,31 @@ import org.bukkit.entity.Player;
    }
  
    public void join(Player player){
-	   this.join(player,true,false);
+	   this.join(player,true,true);
    }
    //Alert is for alerting other players
    //Silent is for self joining
-   public void join(Player player, boolean alert, boolean silent){
-	 //Don't display join and leave messages for Global or PVP
-	   if(alert){
-		 msg(player.getName() + " joined the channel.");
-	   }
-     this.playerList.add(player);
+   public void join(Player player, boolean alertOthers, boolean alertSelf){
+       if(alertOthers) msg(player.getName() + " joined the channel.");
+       this.playerList.add(player);
  
-     ChannelInfo channelInfo = this.plugin.dbHelper.getChannelInfoByChannel(player, this);
-     ChatColor color = ChatColor.valueOf(this.plugin.channelColors.get((channelInfo.index % this.plugin.channelColors.size())));
-     
-     if(!silent){
-         player.sendMessage(String.format(ChatFormatString.SELF_CHANNEL_JOIN, color, channelInfo.index, this.name));
-     }
+       ChannelInfo channelInfo = this.plugin.dbHelper.getChannelInfoByChannel(player, this);
+       ChatColor color = ChatColor.valueOf(this.plugin.channelColors.get((channelInfo.index % this.plugin.channelColors.size())));
+
+     if(alertSelf) player.sendMessage(String.format(ChatFormatString.SELF_CHANNEL_JOIN, color, channelInfo.index, this.name));
    }
  
    public void leave(Player player){
 	   this.leave(player,true);
    }
-   public void leave(Player player, boolean alert) {
+   public void leave(Player player, boolean alertOthers) {
      ChannelInfo channelInfo = this.plugin.dbHelper.getChannelInfoByChannel(player, this);
      ChatColor color = ChatColor.valueOf(this.plugin.channelColors.get((channelInfo.index % this.plugin.channelColors.size())));
  
      player.sendMessage(String.format(ChatFormatString.SELF_CHANNEL_LEAVE, color, channelInfo.index, this.name));
-     
      this.playerList.remove(player);
-     
-     //Don't display join and leave messages for Global or PVP
-     if(alert){
-    	 msg(player.getName() + " left the channel.");
-     }
+
+     if(alertOthers) msg(player.getName() + " left the channel.");
  
      if (this.playerList.isEmpty()) {
        //Delete the channel?

@@ -12,15 +12,22 @@ import org.bukkit.event.Event;
    private Player player;
    private ChatChannel channel;
    private String reason;
-   private boolean rejoin;
+   private boolean rejoining = false;
+   private boolean alertSelf = false;
+   private boolean alertOthers = false;
+   private boolean setDefault = false;
    private boolean cancel = false;
+   
  
-   public ChatChannelJoinEvent(Player player, ChatChannel channel, String reason, boolean rejoin) {
+   public ChatChannelJoinEvent(Player player, ChatChannel channel, String reason, boolean rejoining, boolean alertSelf, boolean alertOthers, boolean setDefault) {
      super("ChatChannelJoinEvent");
      this.player = player;
      this.channel = channel;
      this.reason = reason;
-     this.rejoin = rejoin;
+     this.rejoining = rejoining;
+     this.alertSelf = alertSelf;
+     this.alertOthers = alertOthers;
+     this.setDefault = setDefault;
    }
  
    public boolean isCancelled()
@@ -44,7 +51,23 @@ import org.bukkit.event.Event;
      return this.reason;
    }
    
-   public boolean getRejoin() {
-     return this.rejoin;
+   public boolean getRejoining() {
+     return this.rejoining;
+   }
+   public boolean getAlertSelf() {
+       return this.alertSelf;
+   }
+   public boolean getAlertOthers() {
+       return this.alertOthers;
+   }
+   public boolean getDefault() {
+       return this.setDefault;
+     }
+   
+   public void setAlertSelf(boolean alertStatus){
+       this.alertSelf = alertStatus;
+   }
+   public void setAlertOthers(boolean alertStatus){
+       this.alertOthers = alertStatus;
    }
  }

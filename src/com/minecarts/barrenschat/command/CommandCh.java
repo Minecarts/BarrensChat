@@ -22,6 +22,7 @@ public class CommandCh extends CommandHandler{
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(sender instanceof Player){
             Player player = (Player) sender;
+            if(args.length == 0) return false;
             if(args[0].equalsIgnoreCase("list")){
                 player.sendMessage("Channels you are currently in: "); 
                 ArrayList<ChannelInfo> channelInfoList = plugin.dbHelper.getPlayerChannelsInfo(player);
