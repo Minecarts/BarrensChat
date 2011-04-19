@@ -122,7 +122,8 @@ import org.bukkit.event.Event;
          case HeroicDeathEvent: {
            HeroicDeathEvent e = (HeroicDeathEvent)event;
            ChatChannel chan = this.plugin.channelHelper.getChannelFromName("PVP");
-           chan.msg(e.getDeathCertificate().getMessage());
+           String msg = e.getDeathCertificate().getMessage();
+           chan.msg(msg.replaceAll("\u00A7[0-Fa-f]", ""));
            break;
          }
      }//switch
