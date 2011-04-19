@@ -22,7 +22,10 @@ public class CommandCh extends CommandHandler{
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(sender instanceof Player){
             Player player = (Player) sender;
-            if(args.length == 0) return false;
+            if(args.length == 0){//Display help
+                player.chat("/help");
+                return true;
+            }
             if(args[0].equalsIgnoreCase("list")){
                 player.sendMessage("Channels you are currently in: "); 
                 ArrayList<ChannelInfo> channelInfoList = plugin.dbHelper.getPlayerChannelsInfo(player);
@@ -32,13 +35,13 @@ public class CommandCh extends CommandHandler{
                         ChatColor color = ChatColor.valueOf(plugin.channelColors.get((channelInfo.index % plugin.channelColors.size())));
                         String defaultFlag = "";
                         if (channelInfo.isDefault.booleanValue()) defaultFlag = " (Default)";
-                        player.sendMessage(color + " [" + channelInfo.index + "] : " + c.name + defaultFlag);
+                        player.sendMessage(color + " [" + channelInfo.index + "] : " + c.getName() + defaultFlag);
                     }
                 } else {
                     player.sendMessage(ChatColor.GRAY + "You are not in any channels.");
                 }
              } else {
-               player.sendMessage("Unknown ch command.");
+               player.sendMessage("Unknown ch command. Type \"/ch\" for a list.");
              }
             return true;
         }

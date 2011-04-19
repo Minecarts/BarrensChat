@@ -12,13 +12,15 @@ import org.bukkit.event.Event;
    private Player player;
    private ChatChannel channel;
    private String message;
+   private int index;
    private boolean cancel = false;
  
-   public ChatChannelMessageEvent(Player player, ChatChannel channel, String message) {
+   public ChatChannelMessageEvent(Player player, ChatChannel channel, String message, int index) {
      super("ChatChannelMessageEvent");
      this.player = player;
      this.channel = channel;
      this.message = message;
+     this.index = index;
    }
  
    public boolean isCancelled()
@@ -36,6 +38,9 @@ import org.bukkit.event.Event;
  
    public ChatChannel getChannel() {
      return this.channel;
+   }
+   public int getIndex(){
+       return this.index;
    }
  
    public String getMessage() {

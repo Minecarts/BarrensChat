@@ -105,7 +105,7 @@ public class DBHelper {
           PreparedStatement ps = conn.prepareStatement("UPDATE player_channels SET isDefault = TRUE WHERE playerName=? AND channelId=? LIMIT 1");
 
           ps.setString(1, player.getName());
-          ps.setString(2, channel.name.toLowerCase());
+          ps.setString(2, channel.getName().toLowerCase());
           ps.execute();
           
           ps.close();
@@ -173,7 +173,7 @@ public class DBHelper {
                return new ChannelInfo(0,"global", "Global", true);
           }
           ps.setString(1, player.getName());
-          ps.setString(2, channel.name.toLowerCase());
+          ps.setString(2, channel.getName().toLowerCase());
           ResultSet set = ps.executeQuery();
           ChannelInfo ci = null;
            if (set.next()) {
@@ -205,8 +205,8 @@ public class DBHelper {
         }
         ps.setString(1, player.getName());
         ps.setInt(2, index);
-        ps.setString(3, channel.name.toLowerCase());
-        ps.setString(4, channel.name);
+        ps.setString(3, channel.getName().toLowerCase());
+        ps.setString(4, channel.getName());
         if(isDefault){
             ps.setInt(5, 1);
         } else {
@@ -226,7 +226,7 @@ public class DBHelper {
           Connection conn = this.getConnection();
           PreparedStatement ps = conn.prepareStatement("DELETE FROM player_channels WHERE playerName=? AND channelId=? LIMIT 1");
           ps.setString(1, player.getName());
-          ps.setString(2, channel.name.toLowerCase());
+          ps.setString(2, channel.getName().toLowerCase());
           ps.execute();
 
           CacheChannel.invalidatePlayer(player);
@@ -248,7 +248,7 @@ public class DBHelper {
           Connection conn = this.getConnection();
           PreparedStatement ps = conn.prepareStatement("SELECT * FROM player_channels WHERE playerName=? AND channelId=? LIMIT 1");
           ps.setString(1, player.getName());
-          ps.setString(2, channel.name.toLowerCase());
+          ps.setString(2, channel.getName().toLowerCase());
           ResultSet set = ps.executeQuery();
           boolean playerCheck = set.next(); //true or false
 

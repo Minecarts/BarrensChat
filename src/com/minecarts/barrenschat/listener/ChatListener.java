@@ -8,6 +8,7 @@ import com.minecarts.barrenschat.helpers.ChannelInfo;
 import com.minecarts.barrenschat.listener.PlayerListener.RecipientData;
 import com.minecarts.barrenschat.cache.CacheIgnore;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.CustomEventListener;
@@ -29,7 +30,7 @@ import org.bukkit.event.Event;
      ChatLocalMessageEvent,
      IgnoreListAddEvent, 
      IgnoreListRemoveEvent,
-     ChatChannelDefaultChangeEvent,
+     ChatDefaultChangeEvent,
  
      HeroicDeathEvent;
    }
@@ -64,32 +65,38 @@ import org.bukkit.event.Event;
              if (e.isCancelled()) break;
 
              e.getChannel().chat(e.getPlayer(), e.getMessage());
-             this.plugin.log.info("[" + e.getChannel().name + "] " + e.getPlayer().getName() + ": " + e.getMessage());
+             this.plugin.log.info("[" + e.getChannel().getName() + "] " + e.getPlayer().getName() + ": " + e.getMessage());
              break;
          }
          case ChatChannelJoinEvent: {
              ChatChannelJoinEvent e = (ChatChannelJoinEvent)event;
              if (e.isCancelled()) break;
-             
+
              this.plugin.channelHelper.joinChannel(e.getPlayer(), e.getChannel(), e.getRejoining(),e.getAlertSelf(),e.getAlertOthers(),e.getDefault());
-             this.plugin.log.info(String.format("[%s]: %s joined the channel", new Object[] { e.getChannel().name, e.getPlayer().getName() }));
+             this.plugin.log.info(String.format("[%s]: %s joined the channel", new Object[] { e.getChannel().getName(), e.getPlayer().getName() }));
              break;
          }
          case ChatChannelLeaveEvent: {
              ChatChannelLeaveEvent e = (ChatChannelLeaveEvent)event;
              if (e.isCancelled()) break;
-             e.getChannel().leave(e.getPlayer(), !(e.getReason() == "QUIT")); //Alert only if it's not a quit
+             ChatChannel chan = e.getChannel();
+             if(chan.getId().equalsIgnoreCase("global") || chan.getId().equalsIgnoreCase("pvp")){
+                 e.getChannel().leave(e.getPlayer(), false); //Don't alert global and pvp leaves
+             } else { 
+                 e.getChannel().leave(e.getPlayer(), true); 
+             }
+
              if (e.getReason() == "COMMAND") {
                  this.plugin.dbHelper.removePlayerChannel(e.getPlayer(), e.getChannel()); //They won't rejoin when they reconnect
              }
-             this.plugin.log.info(String.format("[%s]: %s left the channel (%s)", new Object[] { e.getChannel().name, e.getPlayer().getName(), e.getReason() }));
+             this.plugin.log.info(String.format("[%s]: %s left the channel (%s)", new Object[] { e.getChannel().getName(), e.getPlayer().getName(), e.getReason() }));
              break;
          }
          case ChatChannelAnnounceEvent: {
              ChatChannelAnnounceEvent e = (ChatChannelAnnounceEvent)event;
              if (e.isCancelled()) break;
 
-             e.getChannel().msg(e.getMessage());
+             e.getChannel().announce(e.getMessage());
              break;
          }
          case ChatLocalMessageEvent: {
@@ -108,14 +115,14 @@ import org.bukkit.event.Event;
              }
              break;
          }
-         case ChatChannelDefaultChangeEvent: {
-             ChatChannelDefaultChangeEvent e = (ChatChannelDefaultChangeEvent)event;
+         case ChatDefaultChangeEvent: {
+             ChatDefaultChangeEvent e = (ChatDefaultChangeEvent)event;
              Player player = e.getPlayer();
              ChatChannel chan = e.getChannel();
-
-             ChannelInfo defaultChannelInfo = this.plugin.dbHelper.getDefaultChannelInfo(player);
-             if ((defaultChannelInfo == null) || (defaultChannelInfo.id != chan.getId())) {
-               this.plugin.dbHelper.setDefaultChannel(player, chan);
+             if(chan == null){ //If it's null, their default channel is /say
+                 plugin.dbHelper.clearDefaultChannel(player);
+             } else {
+                 this.plugin.dbHelper.setDefaultChannel(player, chan);
              }
              break;
          }
@@ -123,7 +130,14 @@ import org.bukkit.event.Event;
            HeroicDeathEvent e = (HeroicDeathEvent)event;
            ChatChannel chan = this.plugin.channelHelper.getChannelFromName("PVP");
            String msg = e.getDeathCertificate().getMessage();
-           chan.msg(msg.replaceAll("\u00A7[0-Fa-f]", ""));
+
+           Player attacker = Bukkit.getServer().getPlayer(e.getDeathCertificate().getAttacker());
+           Player defender  = Bukkit.getServer().getPlayer(e.getDeathCertificate().getDefender());
+
+           java.util.ArrayList<Player>involvedList = new java.util.ArrayList<Player>();
+           if(attacker != null) involvedList.add(attacker);
+           if(defender != null) involvedList.add(defender);
+           chan.announce(involvedList.toArray(new Player[2]),msg.replaceAll("\u00A7[0-Fa-f]", ""));
            break;
          }
      }//switch

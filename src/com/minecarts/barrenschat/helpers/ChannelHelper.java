@@ -17,10 +17,8 @@ public class ChannelHelper {
    //Join a player to a channel either by a channelName or a channel itself
    //	The rejoining flag will skip checking if they can join the channel which 
    //	is used when a player reconnects to the server and we rejoin them to their channels 
-   public ChatChannel joinChannel(Player player, ChatChannel channel, boolean rejoining, boolean alertSelf, boolean alertOthers, boolean setDefault)
-   {
+   public ChatChannel joinChannel(Player player, ChatChannel channel, boolean rejoining, boolean alertSelf, boolean alertOthers, boolean setDefault) {
      String reason = null;
- 
      if (!rejoining){
        reason = channel.canPlayerJoin(player);
      }
@@ -31,8 +29,8 @@ public class ChannelHelper {
          channel.join(player, alertOthers, alertSelf); //Handle alerting joining the channel
        }
      } else {
-       this.plugin.log.info(player.getName() + " could not join channel " + channel.name + ": " + reason);
-       player.sendMessage(ChatColor.RED + "Unable to join channel: " + channel.name);
+       this.plugin.log.info(player.getName() + " could not join channel " + channel.getName() + ": " + reason);
+       player.sendMessage(ChatColor.RED + "Unable to join channel: " + channel.getName());
        player.sendMessage(ChatColor.RED + " Reason: " + reason);
        return null;
      }
@@ -46,7 +44,6 @@ public class ChannelHelper {
          channel = createChannel(channelName);
        } else {
          channel = (ChatChannel)this.plugin.channelList.get(channelName.toLowerCase());
-
        }
        return joinChannel(player, channel, rejoining, alertSelf, alertOthers, setDefault);
    }
@@ -58,18 +55,14 @@ public class ChannelHelper {
      }
      return createChannel(channelName);
    }
- 
-   
-   
-   
+
+
    private ChatChannel createChannel(String channelName)
    {
      this.plugin.getClass();
  
-     ChatChannel channel = new ChatChannel();
+     ChatChannel channel = new ChatChannel(this.plugin,channelName);
      channel.setId(channelName.toLowerCase());
-     channel.name = channelName;
-     channel.setPlugin(this.plugin);
  
      this.plugin.channelList.put(channelName.toLowerCase(), channel);
      this.plugin.getClass();

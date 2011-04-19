@@ -23,7 +23,7 @@ public class CommandJoin extends CommandHandler{
 			Player player = (Player) sender;
 			ChatChannel chan = plugin.channelHelper.getChannelFromName(argString);
 			if (chan != null) {
-				ChatChannelJoinEvent ccje = new ChatChannelJoinEvent(player, chan, "COMMAND",false,true,false,false);
+				ChatChannelJoinEvent ccje = new ChatChannelJoinEvent(player, chan, "COMMAND",false,true,true,false);
 				server.getPluginManager().callEvent(ccje);
 			} else {
 				player.sendMessage("Internal error: Unable to create and join channel");
