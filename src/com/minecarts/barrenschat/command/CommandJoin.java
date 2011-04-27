@@ -19,6 +19,9 @@ public class CommandJoin extends CommandHandler{
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
     	String argString = StringHelper.join(args, 0);
+    	if(args.length == 0){
+    	    return false;
+    	}
 		if(sender instanceof Player){
 			Player player = (Player) sender;
 			ChatChannel chan = plugin.channelHelper.getChannelFromName(argString);

@@ -20,10 +20,15 @@ public class CommandWhisper extends CommandHandler{
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
     	String argString = StringHelper.join(args, 1);
-		List<Player> playermatches = server.matchPlayer(args[0]);
-		if(sender instanceof Player){
+    	if(argString.length() == 0){ return false; }
+    	List<Player> playermatches = server.matchPlayer(args[0]);
+    	if(sender instanceof Player){
 			Player player = (Player) sender;
-	        if (playermatches.size() > 0) {
+			int numMatches = playermatches.size();
+			if(numMatches > 1){
+	            sender.sendMessage("There were " + numMatches + " players matching \""+args[0]+"\". Please be more specific.");
+	            return true;
+	        } else if (numMatches == 1) {
 	           Player whisperee = (Player)playermatches.get(0);
 	           ChatWhisperEvent cwe = new ChatWhisperEvent(player, whisperee, argString);
 	           server.getPluginManager().callEvent(cwe);

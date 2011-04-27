@@ -21,7 +21,7 @@ public class CommandReply extends CommandHandler{
 		if(sender instanceof Player){
 			Player player = (Player) sender;
 			Player reply = plugin.whisperTracker.getLastWhisperRecieved(player);
-			if (!reply.equals(null)) {
+			if (reply != null) {
 				ChatWhisperEvent cwe = new ChatWhisperEvent(player, reply, argString);
 				server.getPluginManager().callEvent(cwe);
 	        } else {

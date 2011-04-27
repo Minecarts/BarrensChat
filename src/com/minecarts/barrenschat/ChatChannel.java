@@ -67,13 +67,15 @@ public class ChatChannel {
    //Handle announced based upon player so if that player is ignored, it won't be seen
    public void announce(Player[] involvedPlayers, String msg){
        for (Player p : this.playerList) {
+           int ignoreCount = 0;
+           //Check if they're ignoring any actions by this player
            for(Player involvedPlayer : involvedPlayers){
-               if (!CacheIgnore.isIgnoring(p, involvedPlayer)){
-                   //Send the message if they're not ignored
-                   ChannelInfo channelInfo = this.plugin.dbHelper.getChannelInfoByChannel(p, this);
-                   ChatColor color = ChatColor.valueOf(this.plugin.channelColors.get((channelInfo.index % this.plugin.channelColors.size())));
-                   p.sendMessage(color + String.format(ChatFormatString.CHANNEL_BROADCAST, channelInfo.index, msg ));
-               }
+               if (!CacheIgnore.isIgnoring(p, involvedPlayer)){ ignoreCount++;}
+           }
+           if(involvedPlayers.length == ignoreCount){ //Send the message if they're not ignored
+               ChannelInfo channelInfo = this.plugin.dbHelper.getChannelInfoByChannel(p, this);
+               ChatColor color = ChatColor.valueOf(this.plugin.channelColors.get((channelInfo.index % this.plugin.channelColors.size())));
+               p.sendMessage(color + String.format(ChatFormatString.CHANNEL_BROADCAST, channelInfo.index, msg ));
            }
        }
    }

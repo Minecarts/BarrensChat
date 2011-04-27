@@ -137,7 +137,7 @@ import org.bukkit.event.Event;
            java.util.ArrayList<Player>involvedList = new java.util.ArrayList<Player>();
            if(attacker != null) involvedList.add(attacker);
            if(defender != null) involvedList.add(defender);
-           chan.announce(involvedList.toArray(new Player[2]),msg.replaceAll("\u00A7[0-Fa-f]", ""));
+           chan.announce(involvedList.toArray(new Player[involvedList.size()]),msg.replaceAll("\u00A7[0-Fa-f]", ""));
            break;
          }
      }//switch
