@@ -5,40 +5,40 @@
  
  public class WhisperTracker
  {
-   private HashMap<Player, Whispers> whisperTracker = new HashMap<Player, Whispers>();
+   private HashMap<String, Whispers> whisperTracker = new HashMap<String, Whispers>();
  
    public void setWhisperSent(Player sender, Player receiver)
    {
-     if (this.whisperTracker.containsKey(sender)) {
-       ((Whispers)this.whisperTracker.get(sender)).lastTo = receiver;
+     if (this.whisperTracker.containsKey(sender.getName())) {
+       ((Whispers)this.whisperTracker.get(sender.getName())).lastTo = receiver.getName();
      } else {
        Whispers whisper = new Whispers();
-       whisper.lastTo = receiver;
-       this.whisperTracker.put(sender, whisper);
+       whisper.lastTo = receiver.getName();
+       this.whisperTracker.put(sender.getName(), whisper);
      }
    }
  
    public void setWhisperReceived(Player sender, Player receiver) {
-     if (this.whisperTracker.containsKey(receiver)) {
-       ((Whispers)this.whisperTracker.get(receiver)).lastFrom = sender;
+     if (this.whisperTracker.containsKey(receiver.getName())) {
+       ((Whispers)this.whisperTracker.get(receiver.getName())).lastFrom = sender.getName();
      } else {
        Whispers whisper = new Whispers();
-       whisper.lastFrom = sender;
-       this.whisperTracker.put(receiver, whisper);
+       whisper.lastFrom = sender.getName();
+       this.whisperTracker.put(receiver.getName(), whisper);
      }
    }
  
-   public Player getLastWhisperSent(Player sender) {
-     if (this.whisperTracker.containsKey(sender)) {
-       return ((Whispers)this.whisperTracker.get(sender)).lastTo;
+   public String getLastWhisperSent(Player sender) {
+     if (this.whisperTracker.containsKey(sender.getName())) {
+       return ((Whispers)this.whisperTracker.get(sender.getName())).lastTo;
      }
      return null;
    }
  
-   public Player getLastWhisperRecieved(Player receiver)
+   public String getLastWhisperRecieved(Player receiver)
    {
-     if (this.whisperTracker.containsKey(receiver)) {
-       return ((Whispers)this.whisperTracker.get(receiver)).lastFrom;
+     if (this.whisperTracker.containsKey(receiver.getName())) {
+       return ((Whispers)this.whisperTracker.get(receiver.getName())).lastFrom;
      }
      return null;
    }

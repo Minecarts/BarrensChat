@@ -4,6 +4,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.List;
+
 import com.minecarts.barrenschat.BarrensChat;
 import com.minecarts.barrenschat.event.ChatWhisperEvent;
 import com.minecarts.barrenschat.helpers.StringHelper;
@@ -20,10 +22,16 @@ public class CommandRewhisper extends CommandHandler{
     	String argString = StringHelper.join(args, 0);
 		if(sender instanceof Player){
 			Player player = (Player) sender;
-			Player rewhisper = plugin.whisperTracker.getLastWhisperSent(player);
-			if (rewhisper != null) {
-				ChatWhisperEvent cwe = new ChatWhisperEvent(player, rewhisper, argString);	
-				server.getPluginManager().callEvent(cwe);
+			String name = plugin.whisperTracker.getLastWhisperSent(player);
+			if (name != null) {
+			    List<Player> matches =  plugin.getServer().matchPlayer(name);
+			    if(matches.size() > 0){
+			        Player rewhisper = plugin.getServer().matchPlayer(name).get(0);
+			        ChatWhisperEvent cwe = new ChatWhisperEvent(player, rewhisper, argString);	
+			        server.getPluginManager().callEvent(cwe);
+			    } else {
+			        player.sendMessage(String.format("%s is no longer online.",name));
+			    }
 			} else {
 				player.sendMessage("You have not whispered anyone.");
 			}
