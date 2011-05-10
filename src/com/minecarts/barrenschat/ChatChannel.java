@@ -4,7 +4,10 @@ import com.minecarts.barrenschat.helpers.ChannelInfo;
 import com.minecarts.barrenschat.cache.CacheIgnore;
 import com.minecarts.barrenschat.ChatFormatString;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -38,13 +41,13 @@ public class ChatChannel {
     }
 
     public void join(Player player, boolean alertOthers, boolean alertSelf){
-        if(alertOthers) announce(new Player[]{player},player.getName() + " joined the channel.");
+        if(alertOthers) announce(new Player[]{player},ChatFormatString.CHANNEL_USER_JOIN,player.getDisplayName());
         this.playerList.add(player);
 
         ChannelInfo channelInfo = this.plugin.dbHelper.getChannelInfoByChannel(player, this);
         ChatColor color = ChatColor.valueOf(this.plugin.channelColors.get((channelInfo.index % this.plugin.channelColors.size())));
 
-        if(alertSelf) player.sendMessage(String.format(ChatFormatString.SELF_CHANNEL_JOIN, color, channelInfo.index, this.name));
+        if(alertSelf) player.sendMessage(MessageFormat.format(ChatFormatString.SELF_CHANNEL_JOIN, color, channelInfo.index, this.name));
     }
  
     public void leave(Player player){ this.leave(player,true); }
@@ -52,11 +55,11 @@ public class ChatChannel {
         ChannelInfo channelInfo = this.plugin.dbHelper.getChannelInfoByChannel(player, this);
         ChatColor color = ChatColor.valueOf(this.plugin.channelColors.get((channelInfo.index % this.plugin.channelColors.size())));
 
-        player.sendMessage(String.format(ChatFormatString.SELF_CHANNEL_LEAVE, color, channelInfo.index, this.name));
+        player.sendMessage(MessageFormat.format(ChatFormatString.SELF_CHANNEL_LEAVE, color, channelInfo.index, this.name));
         this.playerList.remove(player);
 
-        if(alertOthers) announce(new Player[]{player},player.getName() + " left the channel.");
- 
+        if(alertOthers) announce(new Player[]{player},ChatFormatString.CHANNEL_USER_LEAVE,player.getDisplayName());
+
         if (this.playerList.isEmpty()) { /*Delete the channel?*/ }
         else if (this.moderator == player) {
             Player nextMod = (Player)this.playerList.get(0);
@@ -65,7 +68,7 @@ public class ChatChannel {
     }
 
    //Handle announced based upon player so if that player is ignored, it won't be seen
-   public void announce(Player[] involvedPlayers, String msg){
+   public void announce(Player[] involvedPlayers, String format, String... args){
        for (Player p : this.playerList) {
            int ignoreCount = 0;
            //Check if they're ignoring any actions by this player
@@ -75,7 +78,15 @@ public class ChatChannel {
            if(involvedPlayers.length == ignoreCount){ //Send the message if they're not ignored
                ChannelInfo channelInfo = this.plugin.dbHelper.getChannelInfoByChannel(p, this);
                ChatColor color = ChatColor.valueOf(this.plugin.channelColors.get((channelInfo.index % this.plugin.channelColors.size())));
-               p.sendMessage(color + String.format(ChatFormatString.CHANNEL_BROADCAST, channelInfo.index, msg ));
+
+               //I wish there was a more elegantt way to do this
+               //   broken up into multiple lines to maintain clarity
+               ArrayList<String> finalArgs = new ArrayList<String>();
+               finalArgs.add(color.toString());
+               finalArgs.add(channelInfo.index.toString());
+               finalArgs.addAll(Arrays.asList(args));
+               p.sendMessage(MessageFormat.format(format, finalArgs.toArray()));
+
            }
        }
    }
@@ -84,7 +95,7 @@ public class ChatChannel {
      for (Player p : this.playerList) {
        ChannelInfo channelInfo = this.plugin.dbHelper.getChannelInfoByChannel(p, this);
        ChatColor color = ChatColor.valueOf(this.plugin.channelColors.get((channelInfo.index % this.plugin.channelColors.size())));
-       p.sendMessage(color + String.format(ChatFormatString.CHANNEL_BROADCAST, channelInfo.index, msg ));
+       p.sendMessage(color + MessageFormat.format(ChatFormatString.CHANNEL_BROADCAST, channelInfo.index, msg));
      }
    }
  
@@ -93,9 +104,8 @@ public class ChatChannel {
        if (CacheIgnore.isIgnoring(p, sender)) { continue; }
        ChannelInfo channelInfo = this.plugin.dbHelper.getChannelInfoByChannel(p, this);
        ChatColor color = ChatColor.valueOf(this.plugin.channelColors.get((channelInfo.index % this.plugin.channelColors.size())));
-       String formattedMsg = String.format(ChatFormatString.CHANNEL_USER_MESSAGE, channelInfo.index, sender.getName(), msg);
- 
-       p.sendMessage(color + formattedMsg);
+       
+       p.sendMessage(MessageFormat.format(ChatFormatString.CHANNEL_USER_MESSAGE,new Object[]{color,channelInfo.index,sender.getDisplayName(),msg}));
      }
    }
  
@@ -125,7 +135,7 @@ public class ChatChannel {
    public void setModerator(Player player) {
      if (this.name != "Global") {
        this.moderator = player;
-       announce(new Player[]{player},player.getName() + " is now the channel moderator.");
+       announce(new Player[]{player},ChatFormatString.CHANNEL_MODERATOR_CHANGE,player.getName());
        this.plugin.log.info(player.getName() + " is now the moderator of " + this.name + ".");
      }
    }

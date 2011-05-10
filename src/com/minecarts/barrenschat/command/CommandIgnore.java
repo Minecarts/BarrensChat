@@ -5,9 +5,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 import com.minecarts.barrenschat.BarrensChat;
+import com.minecarts.barrenschat.ChatFormatString;
 import com.minecarts.barrenschat.cache.CacheIgnore;
 
 
@@ -42,11 +44,11 @@ public class CommandIgnore extends CommandHandler{
 			                plugin.log.info(player.getName() + " tried to ignore admin " + ignore.getName());
 			            } else {
 			                if(CacheIgnore.isIgnoring(player, ignore)){
-			                    player.sendMessage("You have unignored " + ignore.getName() + ".");
+			                    player.sendMessage(MessageFormat.format(ChatFormatString.IGNORE_PLAYER_REMOVE, ChatColor.WHITE,ignore.getDisplayName()));
 			                    plugin.dbHelper.removeIgnore(player, ignore);
 			                } else {
                                 plugin.dbHelper.addIgnore(player, ignore);
-                                player.sendMessage("You are now ignoring " + ignore.getName() + ".");
+                                player.sendMessage(MessageFormat.format(ChatFormatString.IGNORE_PLAYER_ADD, ChatColor.WHITE,ignore.getDisplayName()));
 			                }
 			            }
 			        }

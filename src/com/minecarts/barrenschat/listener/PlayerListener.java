@@ -21,11 +21,10 @@ import org.bukkit.util.Vector;
 public class PlayerListener extends org.bukkit.event.player.PlayerListener
 {
     private final BarrensChat plugin;
-    public PlayerListener(BarrensChat instance)
-    {
+    public PlayerListener(BarrensChat instance) {
         plugin = instance;
     }
-    
+
     public void onPlayerJoin(PlayerJoinEvent event){
         Player player = event.getPlayer();
         ArrayList<ChannelInfo> chatChannels = plugin.dbHelper.getPlayerChannelsInfo(player);
@@ -109,21 +108,13 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener
         //    but that was just recently implemented and
         //    maybe we'll do that in the future        
         ArrayList<RecipientData> recipients = new ArrayList<RecipientData>();
-        for (Player p : plugin.getServer().getOnlinePlayers())
-        {
-            if (p != player)
-            {
-                Double distance = currentPlayer.distance(p.getLocation().toVector());
-                recipients.add(new RecipientData(distance,p));
-            }
+        for (Player p : plugin.getServer().getOnlinePlayers()) {
+            //We don't want to skip the player sending the message, so that he can see it too
+            Double distance = currentPlayer.distance(p.getLocation().toVector());
+            recipients.add(new RecipientData(distance,p));
         }
-        
-        ChatLocalMessageEvent clme = new ChatLocalMessageEvent(player,recipients,message);
+        ChatLocalMessageEvent clme = new ChatLocalMessageEvent(player,recipients,event.getMessage());
         plugin.getServer().getPluginManager().callEvent(clme);
-        
-        //And display the message to the actual player who sent the message, but
-        //    also display a tip if there were no players
-        player.sendMessage(message);
     }
     
     @Override

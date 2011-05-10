@@ -1,9 +1,12 @@
 package com.minecarts.barrenschat.listener;
 
+import java.text.MessageFormat;
+
 import org.bukkit.event.CustomEventListener;
 import org.bukkit.event.Event;
 import org.bukkit.ChatColor;
 
+import com.minecarts.barrenschat.ChatFormatString;
 import com.minecarts.barrenschat.event.ChatWhisperEvent;
 import com.minecarts.barrenschat.cache.CacheIgnore;
 
@@ -25,7 +28,7 @@ public class IgnoreListener extends CustomEventListener{
             case ChatWhisperEvent: {
                 ChatWhisperEvent e = (ChatWhisperEvent) event;
                 if (CacheIgnore.isIgnoring(e.getReceiver(), e.getSender())) {
-                    e.getSender().sendMessage(ChatColor.RED + e.getReceiver().getName() + " is ignoring you.");
+                    e.getSender().sendMessage(MessageFormat.format(ChatFormatString.IGNORE_MESSAGE_FAILED, ChatColor.RED, e.getReceiver().getDisplayName()));
                     e.setCancelled(true);
                 }
             } //chatwhisperEvent:

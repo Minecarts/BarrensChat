@@ -1,10 +1,14 @@
 package com.minecarts.barrenschat.command;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.text.MessageFormat;
 import java.util.List;
 import com.minecarts.barrenschat.BarrensChat;
+import com.minecarts.barrenschat.ChatFormatString;
 
 
 public class CommandUnignore extends CommandHandler{
@@ -23,7 +27,7 @@ public class CommandUnignore extends CommandHandler{
             if (ignoreMatches.size() > 0) {
               for (Player unignore : ignoreMatches) {
                 if (ignoreList.contains(unignore.getName())) {
-                  player.sendMessage("You have unignored " + unignore.getName() + ".");
+                  player.sendMessage(MessageFormat.format(ChatFormatString.IGNORE_PLAYER_REMOVE, ChatColor.WHITE,unignore.getDisplayName()));
                   plugin.dbHelper.removeIgnore(player, unignore);
                   didUnignore = true;
                 }

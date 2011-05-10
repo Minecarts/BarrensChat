@@ -4,9 +4,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 import com.minecarts.barrenschat.BarrensChat;
+import com.minecarts.barrenschat.ChatFormatString;
 import com.minecarts.barrenschat.event.ChatWhisperEvent;
 import com.minecarts.barrenschat.helpers.StringHelper;
 
@@ -30,7 +32,7 @@ public class CommandRewhisper extends CommandHandler{
 			        ChatWhisperEvent cwe = new ChatWhisperEvent(player, rewhisper, argString);	
 			        server.getPluginManager().callEvent(cwe);
 			    } else {
-			        player.sendMessage(String.format("%s is no longer online.",name));
+			        player.sendMessage(MessageFormat.format(ChatFormatString.PLAYER_NOT_ONLINE, org.bukkit.ChatColor.WHITE,name));
 			    }
 			} else {
 				player.sendMessage("You have not whispered anyone.");

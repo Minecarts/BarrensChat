@@ -3,10 +3,13 @@
 import com.herocraftonline.squallseed31.heroicdeath.HeroicDeathEvent;
 import com.minecarts.barrenschat.BarrensChat;
 import com.minecarts.barrenschat.ChatChannel;
+import com.minecarts.barrenschat.ChatFormatString;
 import com.minecarts.barrenschat.event.*;
 import com.minecarts.barrenschat.helpers.ChannelInfo;
 import com.minecarts.barrenschat.listener.PlayerListener.RecipientData;
 import com.minecarts.barrenschat.cache.CacheIgnore;
+
+import java.text.MessageFormat;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -51,8 +54,8 @@ import org.bukkit.event.Event;
              Player receiver = e.getReceiver();
              String msg = e.getMessage();
 
-             sender.sendMessage(ChatColor.DARK_AQUA + "> [" + receiver.getName() + "] " + msg);
-             receiver.sendMessage(ChatColor.AQUA + "[" + sender.getName() + "] " + msg);
+             sender.sendMessage(MessageFormat.format(ChatFormatString.WHISPER_SEND, ChatColor.DARK_AQUA,receiver.getDisplayName(),msg));
+             receiver.sendMessage(MessageFormat.format(ChatFormatString.WHISPER_RECEIVE, ChatColor.AQUA,sender.getDisplayName(),msg));
 
              this.plugin.whisperTracker.setWhisperSent(sender, receiver);
              this.plugin.whisperTracker.setWhisperReceived(sender, receiver);
@@ -106,9 +109,9 @@ import org.bukkit.event.Event;
              for(RecipientData rd : e.getRecipients()){
                  if (CacheIgnore.isIgnoring(rd.player, e.getPlayer())) { continue; }
                  if(rd.distance <= 75){
-                     rd.player.sendMessage(ChatColor.WHITE + e.getMessage());
+                     rd.player.sendMessage(MessageFormat.format(ChatFormatString.USER_SAY,ChatColor.WHITE,e.getPlayer().getDisplayName(),e.getMessage()));
                  } else if(rd.distance <= 200){
-                     rd.player.sendMessage(ChatColor.GRAY + e.getMessage());
+                     rd.player.sendMessage(MessageFormat.format(ChatFormatString.USER_SAY,ChatColor.GRAY,e.getPlayer().getDisplayName(),e.getMessage()));
                  } else {
                      //They are out of range
                  }
