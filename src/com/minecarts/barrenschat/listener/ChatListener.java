@@ -99,7 +99,7 @@ import org.bukkit.event.Event;
              ChatChannelAnnounceEvent e = (ChatChannelAnnounceEvent)event;
              if (e.isCancelled()) break;
 
-             e.getChannel().announce(e.getMessage());
+             e.getChannel().announce(e.getInvolvedPlayers(),e.getFormat(),e.getArgs());
              break;
          }
          case ChatLocalMessageEvent: {
