@@ -136,10 +136,11 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener
                     //Trigger the channel message event
                     ChatChannelMessageEvent ccme = new ChatChannelMessageEvent(player,chan,args[1],channelNum);
                     plugin.getServer().getPluginManager().callEvent(ccme);
-                    
-                    //Fire an event if the defualt channel changed
-                    if ((defaultChannelInfo == null) || !(defaultChannelInfo.id.equals(chan.getId()))){
-                        plugin.getServer().getPluginManager().callEvent(new ChatDefaultChangeEvent(player, chan,channelNum,true)); //hasMessage == true
+
+                    if(!ccme.isCancelled()){ //Fire an event if the defualt channel changed only if the chat message succeeded
+                        if ((defaultChannelInfo == null) || !(defaultChannelInfo.id.equals(chan.getId()))){
+                            plugin.getServer().getPluginManager().callEvent(new ChatDefaultChangeEvent(player, chan,channelNum,true)); //hasMessage == true
+                        }
                     }
                 } else {
                     if ((defaultChannelInfo == null) || !(defaultChannelInfo.id.equals(chan.getId()))){
