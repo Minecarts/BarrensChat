@@ -1,6 +1,6 @@
 name: BarrensChat
 main: com.minecarts.barrenschat.BarrensChat
-version: 1.0.4
+version: 1.0.6
 website: http://minecarts.com
 author: Verrier
 depend: [DBConnector]

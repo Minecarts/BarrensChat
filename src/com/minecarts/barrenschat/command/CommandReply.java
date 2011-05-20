@@ -22,6 +22,7 @@ public class CommandReply extends CommandHandler{
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
     	String argString = StringHelper.join(args, 0);
+    	if(argString.length() == 0) return true;
 		if(sender instanceof Player){
 			Player player = (Player) sender;
 			String name = plugin.whisperTracker.getLastWhisperRecieved(player);
