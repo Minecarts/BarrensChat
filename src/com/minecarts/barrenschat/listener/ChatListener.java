@@ -105,8 +105,8 @@ import org.bukkit.event.Event;
          case ChatLocalMessageEvent: {
              ChatLocalMessageEvent e = (ChatLocalMessageEvent)event;
              if(e.isCancelled()) break;
-
              for(RecipientData rd : e.getRecipients()){
+                 if (rd.player.getWorld() != e.getPlayer().getWorld()) { continue; }
                  if (CacheIgnore.isIgnoring(rd.player, e.getPlayer())) { continue; }
                  if(rd.distance <= 75){
                      rd.player.sendMessage(MessageFormat.format(ChatFormatString.USER_SAY,ChatColor.WHITE,e.getPlayer().getDisplayName(),e.getMessage()));
