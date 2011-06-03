@@ -31,7 +31,7 @@ public class DBHelper {
       ArrayList<ChannelInfo> results = new ArrayList<ChannelInfo>();
       try {
           Connection conn = this.getConnection();
-          PreparedStatement ps = conn.prepareStatement("SELECT * FROM player_channels WHERE playerName = ?");
+          PreparedStatement ps = conn.prepareStatement("SELECT * FROM player_channels WHERE playerName = ? LIMIT 10");
           if(ps == null){ //Query failed, so we're going to join them to default channels
               plugin.log.warning("GetPlayerChannels query failed");
               results.add(new ChannelInfo(0,"global", "Global", true));
