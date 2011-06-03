@@ -326,7 +326,7 @@ public class DBHelper {
   public int getNextChannelIndex(Player player){
       try {
           Connection conn = this.getConnection();
-          PreparedStatement ps = conn.prepareStatement("SELECT * FROM player_channels WHERE playerName = ?");
+          PreparedStatement ps = conn.prepareStatement("SELECT `channelIndex` FROM player_channels WHERE playerName = ?");
           if(ps == null){ //Query failed
               plugin.log.warning("GetPlayerChannels query failed");
               return 0;

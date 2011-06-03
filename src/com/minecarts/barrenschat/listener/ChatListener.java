@@ -75,7 +75,7 @@ import org.bukkit.event.Event;
              ChatChannelJoinEvent e = (ChatChannelJoinEvent)event;
              if (e.isCancelled()) break;
 
-             this.plugin.channelHelper.joinChannel(e.getPlayer(), e.getChannel(), e.getRejoining(),e.getAlertSelf(),e.getAlertOthers(),e.getDefault());
+             this.plugin.channelHelper.joinChannel(e.getPlayer(), e.getChannel(), e.getIndex(), e.getRejoining(),e.getAlertSelf(),e.getAlertOthers(),e.getDefault());
              this.plugin.log.info(String.format("[%s]: %s joined the channel", new Object[] { e.getChannel().getName(), e.getPlayer().getName() }));
              break;
          }
