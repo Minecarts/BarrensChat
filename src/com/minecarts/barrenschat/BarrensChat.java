@@ -111,12 +111,8 @@ import org.bukkit.util.config.Configuration;
    public Player[] getChannelMembers(Player requestingPlayer, int channelIndex) {
      ChannelInfo ci = this.dbHelper.getChannelInfoAtIndex(requestingPlayer, Integer.valueOf(channelIndex));
      ChatChannel ch = this.channelHelper.getChannelFromName(ci.name);
-
      if (ch != null) {
-       log.info("Player list has: " + ch.playerList.size() + " members");
        return ch.playerList.toArray(new Player[0]);
-     } else {
-        log.info("Channel was null");
      }
      return null;
    }
