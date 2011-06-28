@@ -1,6 +1,5 @@
  package com.minecarts.barrenschat.listener;
  
-import com.herocraftonline.squallseed31.heroicdeath.HeroicDeathEvent;
 import com.minecarts.barrenschat.BarrensChat;
 import com.minecarts.barrenschat.ChatChannel;
 import com.minecarts.barrenschat.ChatFormatString;
@@ -34,8 +33,6 @@ import org.bukkit.event.Event;
      IgnoreListAddEvent, 
      IgnoreListRemoveEvent,
      ChatDefaultChangeEvent,
- 
-     HeroicDeathEvent;
    }
 
    public void onCustomEvent(Event event){
@@ -128,20 +125,6 @@ import org.bukkit.event.Event;
                  this.plugin.dbHelper.setDefaultChannel(player, chan);
              }
              break;
-         }
-         case HeroicDeathEvent: {
-           HeroicDeathEvent e = (HeroicDeathEvent)event;
-           ChatChannel chan = this.plugin.channelHelper.getChannelFromName("PVP");
-           String msg = e.getDeathCertificate().getMessage();
-
-           Player attacker = Bukkit.getServer().getPlayer(e.getDeathCertificate().getAttacker());
-           Player defender  = Bukkit.getServer().getPlayer(e.getDeathCertificate().getDefender());
-
-           java.util.ArrayList<Player>involvedList = new java.util.ArrayList<Player>();
-           if(attacker != null) involvedList.add(attacker);
-           if(defender != null) involvedList.add(defender);
-           chan.announce(involvedList.toArray(new Player[involvedList.size()]),ChatFormatString.CHANNEL_BROADCAST,msg.replaceAll("\u00A7[0-Fa-f]", ""));
-           break;
          }
      }//switch
    }//onCustomEvent
