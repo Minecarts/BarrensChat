@@ -4,9 +4,6 @@ package com.minecarts.barrenschat.listener;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.*;
 import com.minecarts.barrenschat.BarrensChat;
-import org.json.JSONException;
-
-import java.io.IOException;
 
 public class PlayerListener extends org.bukkit.event.player.PlayerListener
 {

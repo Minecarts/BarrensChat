@@ -6,7 +6,6 @@ import com.minecarts.barrenschat.listener.*;
 
 import com.minecarts.barrenschat.websocket.BarrensSocketFactory;
 
-import java.io.IOException;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.security.MessageDigest;
