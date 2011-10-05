@@ -69,7 +69,7 @@ public class BarrensChat extends JavaPlugin {
                 BarrensSocketFactory.create(p);
             }
 
-        //Activate our reoccuring player state updater
+        //Activate our recurring player state updater
             Bukkit.getScheduler().scheduleAsyncRepeatingTask(this,new Runnable() {
                 public void run() {
                     try {
