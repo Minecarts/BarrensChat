@@ -3,7 +3,7 @@ main: com.minecarts.barrenschat.BarrensChat
 version: ${pom.version}
 website: http://minecarts.com
 author: Verrier
-depend: ['DBConnector']
+depend: ['Socket.IO-Client']
 description: >
              A MMMORPG like chat plugin
 commands:
