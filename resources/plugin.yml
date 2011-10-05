@@ -3,7 +3,7 @@ main: com.minecarts.barrenschat.BarrensChat
 version: ${pom.version}
 website: http://minecarts.com
 author: Verrier
-depend: [DBConnector]
+depend: ['DBConnector']
 description: >
              A MMMORPG like chat plugin
 commands:
@@ -38,3 +38,11 @@ commands:
   unignore:
     description: Unignore a player
     usage: /<command> [player]
+  channel:
+    aliases: [0,1,2,3,4,5,6,7,8,9]
+    description: Chat in a specific channel
+    usage: /<command> [message]
+  global:
+    aliases: [g]
+    description: Chat in the global channel
+    usage: /<command> [message]

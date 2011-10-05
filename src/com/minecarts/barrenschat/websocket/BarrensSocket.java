@@ -12,9 +12,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.text.MessageFormat;
 
-public class BarrensWebSocket {
+public class BarrensSocket {
 
     private IOSocket socket;
     private Player player;
@@ -22,7 +21,7 @@ public class BarrensWebSocket {
     private boolean success = false; //Tracks if we were successful connecting to our socket server or not
     private boolean shouldDisconnect = false; //Boolean to track expected disconnections
 
-    public BarrensWebSocket(Player player, BarrensChat plugin){
+    public BarrensSocket(Player player, BarrensChat plugin){
         this.socket = new IOSocket("http://192.168.1.21:801",new myCallback(player));
         try {
             socket.connect();
@@ -55,7 +54,7 @@ public class BarrensWebSocket {
             //Attempt to reconnect.. but later...
             Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin,new Runnable() {
                 public void run() {
-                    plugin.barrensHelper.reconnect(player);
+                    plugin.BarrensSocketFactory.reconnect(player);
                 }
             },20*10);
             //e.printStackTrace();
@@ -106,6 +105,7 @@ public class BarrensWebSocket {
     }
 
     public void closeSocket(){
+        this.shouldDisconnect = true;
         this.socket.disconnect();
     }
 
@@ -125,13 +125,12 @@ public class BarrensWebSocket {
         }
 
         public void onDisconnect() {
-            if(!shouldDisconnect){
-                //Try to reconnect
-                plugin.barrensHelper.reconnect(player);
-            }
             log("Disconnected from Socket.io server");
+            if(!shouldDisconnect){
+                plugin.BarrensSocketFactory.reconnect(player);
+                return;
+            }
             shouldDisconnect = false;
-            //TODO: Attempt reconnect?? How dow e know it was a valid disconnect vs a lost connection
         }
 
         public void onConnectFailure() {

@@ -1,11 +1,12 @@
 package com.minecarts.barrenschat.listener;
 
 
-import com.minecarts.barrenschat.websocket.BarrensWebSocket;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.*;
 import com.minecarts.barrenschat.BarrensChat;
+import org.json.JSONException;
+
+import java.io.IOException;
 
 public class PlayerListener extends org.bukkit.event.player.PlayerListener
 {
@@ -15,24 +16,29 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener
     }
 
     public void onPlayerJoin(PlayerJoinEvent event){
-        final Player player = event.getPlayer();
-        plugin.barrensHelper.create(player);
+        plugin.BarrensSocketFactory.create(event.getPlayer());
+        try {
+            plugin.serverSocket.playerJoin(event.getPlayer());
+        } catch (Exception e) {}
     }
     
     public void onPlayerQuit(PlayerQuitEvent event){
-        plugin.barrensHelper.clear(event.getPlayer());
+        plugin.BarrensSocketFactory.remove(event.getPlayer());
+        try {
+            plugin.serverSocket.playerQuit(event.getPlayer());
+        } catch (Exception e) {}
     }
 
     public void onPlayerKick(PlayerKickEvent event){
         //TODO: Is this needed?
-        plugin.barrensHelper.clear(event.getPlayer());
+        plugin.BarrensSocketFactory.remove(event.getPlayer());
     }
     
     @Override
     public void onPlayerChat(PlayerChatEvent event){
         final Player player = event.getPlayer();
-        if(plugin.barrensHelper.contains(player)){
-            plugin.barrensHelper.get(player).sendMessage(event.getMessage());
+        if(plugin.BarrensSocketFactory.contains(player)){
+            plugin.BarrensSocketFactory.get(player).sendMessage(event.getMessage());
         } else {
             player.sendMessage("Sorry. Socket isn't ready yet!");
         }

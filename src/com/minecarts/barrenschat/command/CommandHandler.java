@@ -21,7 +21,7 @@ public class CommandHandler implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args){
         //Forward this command to the WebSocket server
         if(sender instanceof Player){
-            plugin.barrensHelper.get((Player) sender).sendCommand(sender.getName(),command.getName(),label,args,((Player) sender).getLocation());
+            plugin.BarrensSocketFactory.get((Player) sender).sendCommand(sender.getName(), command.getName(), label, args, ((Player) sender).getLocation());
         } else {
             System.out.println("Not yet supported! Need a console websocket!");
         }
