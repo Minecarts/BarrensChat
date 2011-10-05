@@ -26,14 +26,14 @@ public class BarrensSocket {
         try {
             socket.connect();
         } catch (IOException e) {
-            System.out.println("Error creating socket!");
+            plugin.log("BarrensSocket ("+player.getName()+"): Error creating socket!");
             return;
         }
         if(socket == null){
-            System.out.println("Error creating socket! (null)");
+            plugin.log("BarrensSocket ("+player.getName()+"): Error creating socket! (null socket)");
             return;
         }
-        System.out.println("Socket connected! :D");
+        plugin.log("BarrensSocket ("+player.getName()+"): Socket created successfully!");
         this.player = player; //Tie a socket to a player
         this.plugin = plugin;
         this.success = true;
@@ -50,7 +50,7 @@ public class BarrensSocket {
         try {
             socket.connect();
         } catch (IOException e) {
-            player.sendMessage("Unable to reconnect to chat server. Trying again in 10 seconds... ");
+            player.sendMessage(ChatColor.DARK_GRAY + "Error: Unable to connect to chat server. Trying again... ");
             //Attempt to reconnect.. but later...
             Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin,new Runnable() {
                 public void run() {
@@ -121,11 +121,11 @@ public class BarrensSocket {
              this.player = player;
          }
         public void onConnect() {
-            log("Connected to Socket.io server");
+            plugin.log("BarrensSocket ("+player.getName()+"): Connected to Socket.io server");
         }
 
         public void onDisconnect() {
-            log("Disconnected from Socket.io server");
+            plugin.log("BarrensSocket ("+player.getName()+"): Disconnected from Socket.io server");
             if(!shouldDisconnect){
                 plugin.BarrensSocketFactory.reconnect(player);
                 return;
@@ -134,7 +134,7 @@ public class BarrensSocket {
         }
 
         public void onConnectFailure() {
-            log("Failed to connect to socket.io server");
+            plugin.log("BarrensSocket ("+player.getName()+") failed to connect to socket.io server");
         }
 
         public void on(String event, org.json.JSONObject... data) {
@@ -157,19 +157,8 @@ public class BarrensSocket {
             }
         }
 
-        public void onMessage(String message) {
-            log(message);
-        }
-
-        public void onMessage(org.json.JSONObject json) {
-            log("Json object: " + json.toString());
-        }
-
-
-         //Todo: Temporary function
-         private void log(String msg){
-             System.out.println(msg);
-         }
+        public void onMessage(String message) { plugin.log("BarrensSocket ("+player.getName()+") received eventless message: " + message); }
+        public void onMessage(org.json.JSONObject json) { plugin.log("BarrensSocket ("+player.getName()+") received eventless message: " + json.toString()); }
     }
 
 }

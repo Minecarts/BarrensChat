@@ -62,7 +62,7 @@ public class ServerSocket {
          try {
             socket.connect();
         } catch (IOException e) {
-             plugin.log("Plugin Socket: Unable to reconnect to websocket server. Trying again in 10 seconds");
+             plugin.log("ServerSocket unable to reconnect to websocket server. Trying again in 10 seconds");
              Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin,new Runnable() {
                  public void run() {
                      plugin.serverSocket.reconnect();
@@ -77,9 +77,9 @@ public class ServerSocket {
     }
      private class callback implements MessageCallback {
         public callback(){}
-        public void onConnect() { log("Connected to Socket.io server"); }
+        public void onConnect() { plugin.log("ServerSocket connected to Socket.io server"); }
         public void onDisconnect() {
-            log("Disconnected from Socket.io server");
+            plugin.log("ServerSocket disconnected from Socket.io server.");
             if(!shouldDisconnect){
                 plugin.serverSocket.reconnect();
                 return;
@@ -87,7 +87,7 @@ public class ServerSocket {
             shouldDisconnect = false;
             //Close socket unless
         }
-        public void onConnectFailure() { log("Failed to connect to socket.io server"); }
+        public void onConnectFailure() { plugin.log("ServerSocket failed to connect to socket.io server."); }
         public void on(String event, org.json.JSONObject... data) {
             //Handle events
             switch(Events.valueOf(event)){
@@ -101,12 +101,7 @@ public class ServerSocket {
             }
         }
 
-        public void onMessage(String message) { log(message); }
-        public void onMessage(org.json.JSONObject json) { log("Json object: " + json.toString()); }
-
-         //Todo: Temporary function
-         private void log(String msg){
-             System.out.println(msg);
-         }
+        public void onMessage(String message) { plugin.log("ServerSocket received eventless message: " + message); }
+        public void onMessage(org.json.JSONObject json) { plugin.log("ServerSocket received eventless message: " + json.toString()); }
      }
 }
