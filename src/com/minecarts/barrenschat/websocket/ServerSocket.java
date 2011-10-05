@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONArray;
 
 import java.io.IOException;
 
@@ -37,9 +38,11 @@ public class ServerSocket {
 
     public void updatePlayers() throws JSONException, IOException {
         if (plugin.getServer().getOnlinePlayers().length == 0) return;
-        JSONObject playerState = new JSONObject();
+       // JSONObject playerState = new JSONObject();
+        JSONArray playerState = new JSONArray();
         for (Player p : plugin.getServer().getOnlinePlayers()) {
-            playerState.put(p.getName(), new JSONObject()
+            playerState.put(new JSONObject()
+                    .put("player", p.getName())
                     .put("health", p.getHealth())
                     .put("location", BarrensChat.getJSONLocation(p.getLocation()))
                     .put("experience", p.getExperience())
@@ -48,7 +51,7 @@ public class ServerSocket {
                     .put("ip", p.getAddress().toString())
             );
         }
-        socket.emit("onlinePlayers", playerState);
+        socket.emit("onlinePlayers", new JSONObject().put("players",playerState));
     }
 
     public void setDisconnecting() {
