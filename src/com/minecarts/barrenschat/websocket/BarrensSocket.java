@@ -22,7 +22,7 @@ public class BarrensSocket {
     private boolean shouldDisconnect = false; //Boolean to track expected disconnections
 
     public BarrensSocket(Player player, BarrensChat plugin) {
-        this.socket = new IOSocket("http://192.168.1.21:801", new myCallback(player));
+        this.socket = new IOSocket(plugin.config.getString("socketUrl","http://192.168.1.21:801"), new myCallback(player));
         try {
             socket.connect();
         } catch (IOException e) {

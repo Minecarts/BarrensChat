@@ -37,7 +37,7 @@ public class BarrensChat extends JavaPlugin {
 
     //WebSockets
         public final BarrensSocketFactory BarrensSocketFactory = new BarrensSocketFactory(this);
-        public final ServerSocket serverSocket = new ServerSocket(this);
+        public ServerSocket serverSocket;
 
     public void onEnable() {
         PluginManager pm = getServer().getPluginManager();
@@ -62,6 +62,9 @@ public class BarrensChat extends JavaPlugin {
             getCommand("unignore").setExecutor(new CommandHandler(this));
             getCommand("channel").setExecutor(new CommandHandler(this));
             getCommand("global").setExecutor(new CommandHandler(this));
+
+        //Create our server socket
+            this.serverSocket = new ServerSocket(this);
 
         //Create sockets for any existing players on the server (/reload support)
             for(Player p : Bukkit.getServer().getOnlinePlayers()){
@@ -97,7 +100,7 @@ public class BarrensChat extends JavaPlugin {
             log(Level.INFO, message);
         }
         public void log(Level level, String message) {
-            logger.log(level, MessageFormat.format("{0}> {1}", pdf.getName(), message));
+            logger.log(level, MessageFormat.format("{0}> {1}",pdf.getName(), message));
         }
 
         public void logf(String message, Object... args) {

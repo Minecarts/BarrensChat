@@ -17,7 +17,7 @@ public class ServerSocket {
     private boolean shouldDisconnect = false;
 
     public ServerSocket(BarrensChat plugin) {
-        this.socket = new IOSocket("http://192.168.1.21:801", new callback());
+        this.socket = new IOSocket(plugin.config.getString("socketUrl","http://192.168.1.21:801"), new callback());
         this.plugin = plugin;
 
         try {
