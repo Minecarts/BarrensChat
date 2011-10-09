@@ -40,6 +40,7 @@ public class BarrensSocketFactory {
     }
 
     public void reconnect(Player p) {
+        if(!p.isOnline()){ remove(p); } //Remove the players socket becuase they disconnected
         if (this.socketMap.containsKey(p)) {
             this.socketMap.get(p).reconnect();
         }
@@ -50,6 +51,7 @@ public class BarrensSocketFactory {
         final Player player = p;
         Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable() {
             public void run() {
+                if(!player.isOnline()) return; //Don't do anything if the player isn't online
                 BarrensSocket socket = new BarrensSocket(player, plugin);
                 if (socket != null && socket.isConnected()) {
                     plugin.BarrensSocketFactory.set(player, socket);
