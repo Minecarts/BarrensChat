@@ -24,7 +24,7 @@ public class BarrensSocket {
     public BarrensSocket(Player player, BarrensChat plugin) {
         this.socket = new IOSocket(plugin.config.getString("socketUrl","http://192.168.1.21:801"), new myCallback(player));
         try {
-            socket.connect();
+            this.connect();
         } catch (IOException e) {
             plugin.log("BarrensSocket (" + player.getName() + "): Error creating socket!");
             return;
@@ -47,9 +47,13 @@ public class BarrensSocket {
         shouldDisconnect = true;
     }
 
+    private void connect() throws IOException { //Internally connect to the websocket ANNDD identify what player is using this socket
+        socket.connect();
+    }
+
     public void reconnect() {
         try {
-            socket.connect();
+            this.connect();
         } catch (IOException e) {
             player.sendMessage(ChatColor.DARK_GRAY + "Error: Unable to connect to chat server. Trying again... ");
             //Attempt to reconnect.. but later...
@@ -66,7 +70,7 @@ public class BarrensSocket {
         if (!socket.isConnected()) {
             player.sendMessage(ChatColor.GRAY + "Restablishing connection to chat server...");
             try {
-                socket.connect();
+                this.connect();
                 player.sendMessage(ChatColor.GREEN + "Success: " + ChatColor.WHITE + "Chat connection re-established.");
             } catch (IOException e) {
                 player.sendMessage(ChatColor.RED + "FAILED: " + ChatColor.WHITE + "Unable to re-establish connection. You may continue playing but will be unable to chat.");
@@ -125,6 +129,9 @@ public class BarrensSocket {
 
         public void onConnect() {
             plugin.log("BarrensSocket (" + player.getName() + "): Connected to Socket.io server");
+            try {
+                socket.emit("socketIdentify",new JSONObject().put("player",player.getName()));
+            } catch (Exception e) { e.printStackTrace(); }
         }
 
         public void onDisconnect() {
